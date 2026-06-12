@@ -1,1 +1,86 @@
 @import "tailwindcss";
+
+@theme {
+  /* --- Typography --- */
+  --font-sans: "Inter", "SF Pro Display", ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom text styles mapping to the design system */
+  /* Hero (H1) */
+  --text-hero: 4.5rem; /* ~72px */
+  --text-hero--line-height: 1.1;
+  --text-hero--letter-spacing: -0.02em;
+  --text-hero--font-weight: 800;
+  
+  /* Section (H2) */
+  --text-section: 2.5rem; /* ~40px */
+  --text-section--line-height: 1.2;
+  --text-section--font-weight: 700;
+
+  /* Card Title */
+  --text-card-title: 1.5rem; /* ~24px */
+  --text-card-title--line-height: 1.4;
+  --text-card-title--font-weight: 600;
+
+  /* Overline */
+  --text-overline: 0.75rem; /* 12px */
+  --text-overline--line-height: 1.5;
+  --text-overline--letter-spacing: 0.05em;
+  --text-overline--font-weight: 500;
+
+  /* --- Colors --- */
+  /* Base */
+  --color-bg-base: #09090B;
+  
+  /* Surfaces (Glass) */
+  --color-surface-base: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-border-subtle: rgba(255, 255, 255, 0.12);
+  
+  /* Typography */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A1A1AA;
+  --color-text-tertiary: #71717A;
+  
+  /* Accents & Glows */
+  --color-accent-primary: #818CF8;
+  --color-glow-purple: #8B5CF6;
+  --color-glow-blue: #06B6D4;
+  --color-glow-pink: #D946EF;
+
+  /* --- Radii --- */
+  --radius-pill: 9999px;
+  --radius-card-lg: 1.5rem; /* 24px */
+  --radius-card-md: 1rem;   /* 16px */
+  --radius-icon-lg: 0.75rem;/* 12px */
+  --radius-icon-md: 0.5rem; /* 8px */
+
+  /* --- Shadows & Blurs --- */
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --blur-glass: 16px;
+  --blur-aurora: 120px; /* Extrapolated for the heavy background glows */
+
+  /* --- Gradients (v4 allows custom background images in theme) --- */
+  --background-image-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --background-image-aurora-purple: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.4) 0%, transparent 60%);
+}
+
+/* COMPONENT UTILITIES 
+  These are patterns identified in design.md that combine multiple 
+  tokens and are best treated as utility classes.
+*/
+@layer components {
+  /* The core glass card effect */
+  .glass-panel {
+    @apply bg-glass backdrop-blur-glass border border-border-subtle shadow-glass rounded-card-lg;
+  }
+
+  /* Interactive glass buttons (e.g. Nav elements) */
+  .glass-button {
+    @apply bg-surface-base backdrop-blur-glass border border-border-subtle rounded-pill text-text-primary text-sm font-medium transition-colors duration-200 hover:bg-surface-hover;
+  }
+
+  /* Primary solid button */
+  .btn-primary {
+    @apply bg-accent-primary text-text-primary text-sm font-medium rounded-pill px-5 py-2 transition-transform active:scale-95;
+  }
+}
