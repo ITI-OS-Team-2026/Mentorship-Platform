@@ -1,88 +1,123 @@
-# Product Requirements Document (PRD)
-## Academic Mentorship & Code Review Platform
+# MentorshipHub Design System
+
+## 1. Overview
+The MentorshipHub design system utilizes a modern, "dark mode" aesthetic heavily reliant on **glassmorphism**, large radiant background glows (aurora effects), and clean typography. The UI feels premium, tech-focused, and highly dimensional.
 
 ---
 
-## 1. Project Overview
-The Academic Mentorship & Code Review Platform is a role-based scheduling and mentorship application designed for technical learning environments. It allows junior developers to discover and book 45-minute code review sessions, pair programming evaluations, or mock interviews with technical experts. 
+## 2. Color Palette
 
-## 2. Technology Stack
-### Frontend
-* **Core:** React (JavaScript only, strictly no TypeScript)
-* **Routing:** React Router v7 (Role-based dynamic routing)
-* **Styling & UI:** TailwindCSS v4, shadcn/ui (Bootstrap is strictly prohibited)
-* **State Management:** Zustand (for global application state)
-* **Utilities:** `useDebounce` from the `usehooks` library (for search input optimization)
+*Note: Hex codes are approximated based on visual sampling of the dark theme and gradient glows.*
 
-### Backend
-* **Environment:** Node.js with Express.js
-* **Database:** MongoDB (using Mongoose for Object Data Modeling)
-* **Authentication:** JSON Web Tokens (JWT)
-* **AI Integration:** Custom evaluation helper for processing text submission descriptions
+### Base Colors
+| Role | Color Name | Hex Code | Usage |
+| :--- | :--- | :--- | :--- |
+| **Background Base** | Deep Noir | `#09090B` | Main page background |
+| **Surface Base** | Glass Dark | `rgba(255, 255, 255, 0.03)` | Base fill for cards and floating navs |
+| **Surface Hover/Alt**| Glass Lighter | `rgba(255, 255, 255, 0.08)` | Hover states, icon backgrounds |
+| **Border Subtle** | Glass Border | `rgba(255, 255, 255, 0.12)` | Component borders, dividers |
 
----
+### Typography Colors
+| Role | Color Name | Hex Code | Usage |
+| :--- | :--- | :--- | :--- |
+| **Text Primary** | Pure White | `#FFFFFF` | Main headings, CTA text, card titles |
+| **Text Secondary**| Cool Gray | `#A1A1AA` | Subtitles, navbar links, footer text |
+| **Text Tertiary** | Dark Gray | `#71717A` | Metadata, copyright text |
 
-## 3. User Roles & Permissions
-The system operates on a unified authentication engine with strict Role-Based Access Control (RBAC).
-
-* **Student (Junior Developer):** Can browse mentors, book sessions, manage their bookings (cancel/shift), and view evaluation feedback.
-* **Mentor (Technical Expert):** Manages their weekly availability matrix, views incoming bookings, and appends evaluation notes. *Restriction: Mentors cannot book sessions with other mentors.*
-* **Administrator:** Oversees platform integrity, manages system configurations (e.g., adding technical stacks), and moderates user verification/access.
-
----
-
-## 4. Core Features & Required Pages
-
-### 4.1 Frontend Routes
-* **Discovery Engine (`/mentors`):** Main landing view with stack and keyword filters. Integrates `useDebounce` (e.g., 500ms delay) to govern backend API call rates during search.
-* **Mentor Profile (`/mentors/:id`):** View specialized skills, rating matrices, and book open 45-minute scheduling segments.
-* **Student Dashboard (`/student/dashboard`):** Track historical/pending sessions, cancel slots, and view feedback.
-* **Mentor Dashboard (`/mentor/dashboard`):** Manage operational availability parameters and monitor pending reviews.
-* **Admin Dashboard (`/admin/dashboard`):** Manage system categories (Stacks) and user moderation. Protected by `<Suspense>` and `React.lazy()` for code-splitting.
-* **Auth Pages (`/login`, `/register`):** Role-segregated onboarding and unified login.
-* **404 Not Found (`*`):** Catch-all interceptor for non-existent endpoints.
-
-### 4.2 Booking Concurrency & Logic
-* **Availability Calculation:** Unbooked 45-minute blocks are dynamically computed from the mentor's operating window.
-* **Overlap Prevention:** The backend must execute mathematical verification (`Requested Start < Existing End` AND `Requested End > Existing Start`) to completely block overlapping bookings for the same mentor.
-* **Timezone Standardization:** All scheduling timestamps must be stored in the MongoDB database in pure UTC. The frontend is responsible for converting UTC strings to the user's localized browser timezone.
+### Accent / Brand Colors (Glows & Gradients)
+| Role | Color Name | Hex Code | Usage |
+| :--- | :--- | :--- | :--- |
+| **Accent Primary** | Soft Indigo | `#818CF8` | Primary CTA buttons ("Get Started") |
+| **Glow Purple** | Neon Amethyst| `#8B5CF6` | Center of hero background aurora |
+| **Glow Blue** | Neon Cyan | `#06B6D4` | Right/Outer edges of background aurora |
+| **Glow Pink** | Neon Magenta | `#D946EF` | Left edges of background aurora |
 
 ---
 
-## 5. Database Architecture (MongoDB/Mongoose)
+## 3. Typography
 
-Transitioning to NoSQL requires referencing documents utilizing `ObjectId`.
+The system uses a clean, geometric sans-serif typeface (similar to **Inter** or **SF Pro Display**). 
 
-### Collections
-1.  **users:**
-    * `_id` [ObjectId], `email` (String, unique), `password_hash` (String), `role` (Enum: ['Admin', 'Mentor', 'Student']), `created_at` (Date).
-2.  **stacks:**
-    * `_id` [ObjectId], `name` (String, unique), `description` (String).
-3.  **mentorProfiles:**
-    * `_id` [ObjectId], `user_id` [ObjectId, ref: 'User', unique], `stack_id` [ObjectId, ref: 'Stack'], `name` (String), `title` (String), `bio` (String), `is_verified` (Boolean), `average_rating` (Number), `hourly_rate` (Number).
-4.  **studentProfiles:**
-    * `_id` [ObjectId], `user_id` [ObjectId, ref: 'User', unique], `name` (String).
-5.  **mentorAvailabilities:**
-    * `_id` [ObjectId], `mentor_id` [ObjectId, ref: 'MentorProfile'], `day_of_week` (Number/String), `start_time` (String), `end_time` (String).
-6.  **reviewSessions:**
-    * `_id` [ObjectId], `mentor_id` [ObjectId, ref: 'MentorProfile'], `student_id` [ObjectId, ref: 'StudentProfile'], `start_time` (Date UTC), `end_time` (Date UTC), `description` (String), `status` (Enum: ['Scheduled', 'Completed', 'Canceled']).
-7.  **sessionAuditLogs:**
-    * `_id` [ObjectId], `session_id` [ObjectId, ref: 'ReviewSession', unique], `predicted_tag` (String), `confidence_score` (Number), `status` (Enum: ['SUCCESS', 'FAILED']), `error_message` (String), `latency_ms` (Number).
-
-*Note on Data Integrity:* Since MongoDB does not have built-in SQL cascade constraints, the Express.js controllers must manually handle related document deletions or state updates (e.g., if a session is canceled, the audit log may need updating).
+| Element | Font Size | Weight | Line Height | Case / Tracking |
+| :--- | :--- | :--- | :--- | :--- |
+| **Hero H1** | `~64px-72px` | `800` (ExtraBold)| `1.1` | Uppercase, Tight tracking (`-0.02em`) |
+| **Section H2** | `~36px-40px` | `700` (Bold) | `1.2` | Uppercase |
+| **Card Title** | `~20px-24px` | `600` (SemiBold)| `1.4` | Title Case |
+| **Overline** | `~12px` | `500` (Medium) | `1.5` | Uppercase, Loose tracking (`0.05em`) |
+| **Body/Links** | `~14px-16px` | `400` (Regular) | `1.5` | Sentence Case |
+| **Small Text** | `~12px` | `400` (Regular) | `1.5` | Sentence Case |
 
 ---
 
-## 6. API & Integration Guidelines
-* **Security:** JWT verification middleware required for all protected routes. All secrets and AI tokens must be stored in a `.env` file.
-* **AI Audit Pipeline:** Upon session creation, the Node.js backend must asynchronously pass the session's `description` text to the classification pipeline. Intercept exceptions via `try/catch` blocks to ensure the session booking succeeds even if the AI pipeline times out (saving the error in `sessionAuditLogs`).
-* **CORS:** Cross-Origin Resource Sharing must be configured in Express to accept requests from the frontend port.
-* **API Deliverables:** A Postman/Insomnia JSON collection must be maintained to verify request/response shapes.
+## 4. Effects & Styles (Glassmorphism)
+
+The defining visual trait of this UI is the layered frosted glass effect.
+
+* **Glass Panel Effect:**
+    * **Background:** `linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)`
+    * **Backdrop Filter:** `blur(16px)`
+    * **Border:** `1px solid rgba(255, 255, 255, 0.1)`
+    * **Shadow:** `0 8px 32px rgba(0, 0, 0, 0.4)`
+* **Aurora Backgrounds:** Large, softly blurred radial gradients placed absolutely behind main content areas.
+    * Example: `radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.4) 0%, transparent 60%)` mixed with cyan and pink layers.
 
 ---
 
-## 7. UI/UX & Quality Enhancements
-* **Theme Control:** Implement system-wide dark/light mode toggles via Context or Zustand overriding Tailwind configuration.
-* **Skeleton Loaders:** Utilize shadcn Skeleton components to mask network latency during data fetching (e.g., waiting for Mentor profiles to load).
-* **Toast Notifications:** Deploy toast components for all major state mutations (e.g., successful booking, login failure).
-* **i18n Localization:** Structure components to support future translation files and Right-to-Left (RTL) CSS rule alterations.
+## 5. Components
+
+### A. Buttons
+**1. Primary CTA ("Get Started")**
+* **Background:** Solid Soft Indigo (`#818CF8`)
+* **Text:** Pure White, `14px`, `500` weight
+* **Shape:** Full Pill (`border-radius: 9999px`)
+* **Padding:** `8px 20px` (Top/Bottom, Left/Right)
+
+**2. Glass Pill Button ("Find a Mentor", "How it Works")**
+* **Background:** Glass Base (`rgba(255,255,255,0.05)`) with heavy blur.
+* **Border:** `1px solid rgba(255,255,255,0.1)`
+* **Text:** Pure White, `14px`, `500` weight
+* **Shape:** Full Pill (`border-radius: 9999px`)
+* **Padding:** `12px 24px`
+
+### B. Navigation Bar (Floating Pill)
+* **Layout:** Flexbox, Space-between, Centered items.
+* **Background:** Glass Base + Blur.
+* **Shape:** Full Pill (`border-radius: 9999px`)
+* **Border:** Top border slightly more opaque to catch "light" (`rgba(255,255,255,0.2)`).
+* **Padding:** `8px 8px 8px 24px` (Asymmetrical: tighter on the right to accommodate the CTA button).
+
+### C. Feature Cards (Domain Expertise)
+* **Container Shape:** Rounded Rectangle (`border-radius: 16px` to `24px`).
+* **Surface:** Glass Panel Effect.
+* **Layout Structure (Vertical):**
+    * Top: Icon container
+    * Middle: Empty space/spacer (pushing text to bottom)
+    * Bottom: Card Title (`18px-24px`) and Subtext (`12px-14px`, text-secondary).
+* **Inner Padding:** `24px`.
+
+---
+
+## 6. Layout & Spacing
+
+* **Grid System:** Uses an asymmetrical masonry-style CSS Grid for the "Domain Expertise" cards.
+    * Columns are roughly equal width.
+    * Row spans vary (e.g., the "Frontend" card is taller, spanning two rows, while "Infrastructure" is shorter).
+    * **Grid Gap:** `16px` or `24px` between cards.
+* **Spacing Scale:** Appears to follow an 8pt grid system.
+    * Inner card padding: `24px` (`3x`)
+    * Space between section title and grid: `32px` (`4x`)
+    * Hero text line-gap: `8px` (`1x`)
+* **Max Width:** The main content container appears to be constrained to roughly `1200px` to `1440px`, centered on the screen.
+
+---
+
+## 7. Iconography
+
+* **Style:** Minimalist, thin-line, monochrome (white/light gray) SVGs. 
+* **Housing:** Icons are placed inside small rounded-square containers (`border-radius: 8px` or `12px`) located in the top-left corner of the feature cards.
+* **Container Background:** Slightly lighter than the card background to create contrast (`rgba(255, 255, 255, 0.08)`).
+* **Examples:**
+    * *Frontend:* Atom symbol
+    * *Backend:* Server rack
+    * *AI / ML:* Human brain with nodes
+    * *Infrastructure:* Cloud/nodes (AWS-style logo)
