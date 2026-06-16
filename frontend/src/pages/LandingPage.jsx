@@ -174,30 +174,49 @@ export default function LandingPage() {
       ──────────────────────────────────────── */}
       <section
         id="metrics"
-        className="border-y border-border bg-muted/30 py-7"
+        className="border-y border-border py-20"
         aria-label="Platform statistics"
       >
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-20">
-            {[
-              { value: '500+', label: 'Expert Mentors' },
-              { value: '10k+', label: 'Sessions Completed' },
-              { value: '4.9★', label: 'Average Rating' },
-              { value: '50+', label: 'Tech Domains' },
-              { value: '95%', label: 'Goal Achievement' },
-            ].map(({ value, label }, idx, arr) => (
-              <React.Fragment key={label}>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-foreground">{value}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                    {label}
-                  </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-16">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
+
+            {/* Left — narrative copy */}
+            <div className="flex flex-col justify-center gap-5 text-sm leading-relaxed text-muted-foreground max-w-sm">
+              <p>
+                Mentorship is undergoing its biggest shift in a generation.
+                Learners who work with the right guide are already landing roles
+                faster — and with far greater confidence.
+              </p>
+              <p>
+                MentHub is built on that belief. Our platform connects you with
+                verified experts so you can focus on what actually moves your
+                career forward.
+              </p>
+            </div>
+
+            {/* Right — stacked metric rows */}
+            <div className="flex flex-col">
+              {[
+                { value: '500+', desc: 'verified expert mentors across every major tech domain' },
+                { value: '10k+', desc: 'sessions completed — with a 95 % goal-achievement rate' },
+                { value: '4.9★', desc: 'average mentor rating from thousands of learner reviews' },
+              ].map(({ value, desc }) => (
+                <div
+                  key={value}
+                  className="flex items-baseline justify-between gap-6 border-t border-border py-6 first:border-t-0"
+                >
+                  {/* Big value */}
+                  <span className="text-[clamp(2.8rem,6vw,4rem)] font-extrabold leading-none tracking-tight text-primary">
+                    {value}
+                  </span>
+                  {/* Right-aligned descriptor */}
+                  <span className="max-w-[14rem] text-right text-xs leading-relaxed text-muted-foreground">
+                    {desc}
+                  </span>
                 </div>
-                {idx < arr.length - 1 && (
-                  <div className="hidden h-8 w-px bg-border md:block" />
-                )}
-              </React.Fragment>
-            ))}
+              ))}
+            </div>
+
           </div>
         </div>
       </section>
@@ -310,36 +329,149 @@ export default function LandingPage() {
       {/* ────────────────────────────────────────
           Section E — Final CTA Push
       ──────────────────────────────────────── */}
-      <section id="cta" className="relative overflow-hidden py-36">
-        {/* Central aurora glow */}
+      <section id="cta" className="relative overflow-hidden py-28">
+        {/* Soft background glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute left-1/2 top-1/2 h-[50rem] w-[50rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/12 blur-[140px]" />
+          <div className="absolute left-1/2 top-0 h-[35rem] w-[50rem] -translate-x-1/2 rounded-full bg-primary/8 blur-[130px]" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-          <p className="mb-6 text-xs uppercase tracking-[0.45em] text-muted-foreground">
-            Start Today
-          </p>
-          <h2 className="mb-8 text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-foreground lg:text-7xl">
-            Ready to<br />
-            <span className="text-primary">Level Up</span>?
-          </h2>
-          <p className="mx-auto mb-14 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Join thousands of developers, designers, and engineers who have
-            accelerated their careers through expert mentorship.
-          </p>
+        <div className="relative z-10 mx-auto max-w-5xl px-6">
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="gap-2 px-10">
-              <Link to="/login">
-                Get Started Free
-                <ArrowRight className="size-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="px-10">
-              <Link to="/mentors">Explore Mentors</Link>
-            </Button>
+          {/* ── Top: icon + heading + subtitle ── */}
+          <div className="mb-16 text-center">
+            {/* Abstract icon cluster */}
+            <div className="mb-8 inline-flex items-end justify-center gap-1" aria-hidden="true">
+              {/* Book stack */}
+              <div className="flex flex-col items-center gap-0.5">
+                {[80, 72, 64].map((w, i) => (
+                  <div
+                    key={i}
+                    className="h-2.5 rounded-sm border border-primary/30 bg-primary/15"
+                    style={{ width: `${w}px` }}
+                  />
+                ))}
+              </div>
+              {/* Lightning bolt */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="-ml-3 -mt-6 size-8 text-primary"
+              >
+                <path d="M13 2L4.09 12.97A1 1 0 005 14.5h5.5L10 22l9.5-10.5A1 1 0 0018.5 10H13l.5-8z" />
+              </svg>
+            </div>
+
+            <h2 className="mx-auto max-w-2xl text-4xl font-bold leading-tight tracking-tight text-foreground lg:text-5xl">
+              Accelerate your career with<br />
+              <span className="text-primary">the right mentor</span>
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
+              Ready to reach your next level? Book a session with a verified
+              industry expert today.
+            </p>
           </div>
+
+          {/* ── Bottom: split preview card ── */}
+          <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/60 backdrop-blur-sm shadow-2xl md:flex">
+
+            {/* Left — dashboard preview */}
+            <div className="relative min-h-[280px] flex-1 overflow-hidden bg-muted/30 md:min-h-[360px]">
+              {/* Fake browser chrome */}
+              <div className="absolute inset-0 flex flex-col">
+                <div className="flex items-center gap-1.5 border-b border-border/60 bg-card/80 px-4 py-2.5">
+                  <div className="size-2.5 rounded-full bg-destructive/60" />
+                  <div className="size-2.5 rounded-full bg-primary/40" />
+                  <div className="size-2.5 rounded-full bg-chart-2/60" />
+                  <div className="ml-3 flex-1 rounded-full bg-muted/60 py-0.5 px-3 text-[10px] text-muted-foreground">
+                    menthub.io/dashboard
+                  </div>
+                </div>
+                {/* Fake dashboard content */}
+                <div className="flex-1 p-4 space-y-2.5 overflow-hidden">
+                  <div className="flex gap-3">
+                    <div className="flex flex-col gap-1.5 flex-1">
+                      <div className="h-2 w-20 rounded bg-muted-foreground/20" />
+                      <div className="h-2 w-28 rounded bg-muted-foreground/15" />
+                    </div>
+                    <div className="h-6 w-16 rounded-full bg-primary/30" />
+                  </div>
+                  {[90, 75, 60, 80, 65, 50].map((w, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="size-6 rounded-full bg-muted-foreground/15 shrink-0" />
+                      <div className="flex-1 space-y-1">
+                        <div className="h-1.5 rounded bg-muted-foreground/20" style={{ width: `${w}%` }} />
+                        <div className="h-1.5 rounded bg-muted-foreground/12" style={{ width: `${w * 0.6}%` }} />
+                      </div>
+                      <div className="h-5 w-12 rounded-full bg-border/60" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Gradient fade on right edge */}
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-card/60 to-transparent" />
+            </div>
+
+            {/* Right — checklist + CTA */}
+            <div className="flex flex-col justify-between gap-8 bg-card/80 p-8 md:w-72 lg:w-80 shrink-0">
+              <div>
+                <p className="mb-5 text-sm font-semibold text-foreground">
+                  We'd love to talk to you about
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    'Personalised 1-on-1 mentorship',
+                    'Expert guidance across 50+ domains',
+                    'Loved by 10,000+ learners',
+                    'How we help you reach your goals',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <svg
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="mt-0.5 size-4 shrink-0 text-primary"
+                        aria-hidden="true"
+                      >
+                        <path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA + avatars */}
+              <div className="space-y-4">
+                <Button asChild size="lg" className="w-full gap-2">
+                  <Link to="/login">
+                    Get Started Free
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+
+                {/* Avatar stack */}
+                <div className="flex items-center gap-2.5">
+                  <div className="flex -space-x-2">
+                    {['S', 'A', 'R', 'M'].map((initial, i) => (
+                      <div
+                        key={i}
+                        className="inline-flex size-8 items-center justify-center rounded-full border-2 border-card bg-primary/20 text-[10px] font-bold text-primary ring-0"
+                        aria-hidden="true"
+                      >
+                        {initial}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-tight">
+                    500+ mentors<br />ready to help
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>
