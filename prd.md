@@ -1,7 +1,7 @@
-# MentorshipHub Design System
+# MentHub Design System
 
 ## 1. Overview
-The MentorshipHub design system utilizes a modern, "dark mode" aesthetic heavily reliant on **glassmorphism**, large radiant background glows (aurora effects), and clean typography. The UI feels premium, tech-focused, and highly dimensional.
+The MentHub design system utilizes a modern, "dark mode" aesthetic heavily reliant on **glassmorphism**, large radiant background glows (aurora effects), and clean typography. The UI feels premium, tech-focused, and highly dimensional.
 
 ---
 

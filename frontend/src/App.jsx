@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { useAuthStore } from './store/authStore'
 
+import { PublicLayout } from './layouts/PublicLayout'
 import AuthPage from './pages/AuthPage'
 import LandingPage from './pages/LandingPage'
 import MentorSearch from './pages/MentorSearch'
@@ -36,10 +37,33 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/mentors" element={<MentorSearch />} />
-        <Route path="/mentors/:id" element={<MentorProfile />} />
+        {/* Public pages — wrapped with FloatingNav + Footer */}
+        <Route
+          path="/"
+          element={
+            <PublicLayout>
+              <LandingPage />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/mentors"
+          element={
+            <PublicLayout>
+              <MentorSearch />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/mentors/:id"
+          element={
+            <PublicLayout>
+              <MentorProfile />
+            </PublicLayout>
+          }
+        />
 
+        {/* Auth — full-screen, no shared layout */}
         <Route
           path="/login"
           element={
@@ -49,6 +73,7 @@ export default function App() {
           }
         />
 
+        {/* Protected dashboard routes */}
         <Route
           path="/student/dashboard"
           element={
@@ -79,4 +104,4 @@ export default function App() {
       <Toaster theme="dark" position="bottom-right" />
     </BrowserRouter>
   )
-}
+}
