@@ -114,30 +114,30 @@ function AuthPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-10%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-cyan-400/20 blur-[150px] mix-blend-screen" />
-        <div className="absolute right-[-8%] top-[12%] h-[38rem] w-[38rem] rounded-full bg-[#b026ff]/30 blur-[150px] mix-blend-screen" />
+        <div className="absolute left-[-10%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-[150px] mix-blend-screen" />
+        <div className="absolute right-[-8%] top-[12%] h-[38rem] w-[38rem] rounded-full bg-secondary/30 blur-[150px] mix-blend-screen" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-center px-6 py-10 md:px-10 lg:px-16">
         <div className="grid w-full place-items-center">
-          <section className="relative">
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md md:p-12">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-              <div className="mb-8 flex items-center justify-between gap-4">
+          <section className="relative w-full max-w-2xl">
+            <div className="relative overflow-hidden rounded-3xl border border-border bg-card/60 p-6 shadow-2xl backdrop-blur-md md:p-12 text-card-foreground">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+              <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/35">Authentication</p>
-                  <h2 className="mt-3 text-2xl font-semibold uppercase tracking-tight text-white md:text-4xl">
+                  <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Authentication</p>
+                  <h2 className="mt-3 text-2xl font-semibold uppercase tracking-tight md:text-4xl">
                     {mode === 'login' ? 'Login' : 'Register'}
                   </h2>
                 </div>
 
-                <div className="rounded-full border border-white/10 bg-black/30 p-1 backdrop-blur-md">
-                  <div className="relative flex rounded-full bg-white/5 p-1">
+                <div className="rounded-full border border-border bg-muted/50 p-1 backdrop-blur-md self-start sm:self-auto">
+                  <div className="relative flex rounded-full p-1">
                     <span
                       className={cn(
-                        'absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-white/15 transition-transform duration-300 ease-out',
+                        'absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-background shadow-sm transition-transform duration-300 ease-out',
                         mode === 'register' && 'translate-x-full',
                       )}
                     />
@@ -146,7 +146,7 @@ function AuthPage() {
                       onClick={() => handleModeChange('login')}
                       className={cn(
                         'relative z-10 rounded-full px-4 py-2 text-sm uppercase tracking-[0.3em] transition-colors',
-                        mode === 'login' ? 'text-white' : 'text-white/45',
+                        mode === 'login' ? 'text-foreground font-medium' : 'text-muted-foreground',
                       )}
                     >
                       Login
@@ -156,7 +156,7 @@ function AuthPage() {
                       onClick={() => handleModeChange('register')}
                       className={cn(
                         'relative z-10 rounded-full px-4 py-2 text-sm uppercase tracking-[0.3em] transition-colors',
-                        mode === 'register' ? 'text-white' : 'text-white/45',
+                        mode === 'register' ? 'text-foreground font-medium' : 'text-muted-foreground',
                       )}
                     >
                       Register
@@ -167,72 +167,72 @@ function AuthPage() {
 
               {loading ? (
                 <div className="space-y-6">
-                  <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-                    <Skeleton className="h-24 w-full bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:200%_100%] [animation:sweep_1.5s_linear_infinite]" />
+                  <div className="overflow-hidden rounded-3xl border border-border bg-muted/20">
+                    <Skeleton className="h-24 w-full bg-muted/40" />
                   </div>
-                  <div className="overflow-hidden border-b-2 border-white/20">
-                    <Skeleton className="h-24 w-full rounded-none bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:200%_100%] [animation:sweep_1.5s_linear_infinite]" />
+                  <div className="overflow-hidden border-b-2 border-border/50">
+                    <Skeleton className="h-24 w-full rounded-none bg-muted/40" />
                   </div>
-                  <div className="overflow-hidden border-b-2 border-white/20">
-                    <Skeleton className="h-24 w-full rounded-none bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:200%_100%] [animation:sweep_1.5s_linear_infinite]" />
+                  <div className="overflow-hidden border-b-2 border-border/50">
+                    <Skeleton className="h-24 w-full rounded-none bg-muted/40" />
                   </div>
                   <div className="flex items-center justify-end">
-                    <Skeleton className="h-14 w-44 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:200%_100%] [animation:sweep_1.5s_linear_infinite]" />
+                    <Skeleton className="h-14 w-44 rounded-full bg-muted/40" />
                   </div>
                 </div>
               ) : (
                 <form className="space-y-8" onSubmit={handleSubmit} noValidate>
                   {errors.form ? (
-                    <div className="rounded-3xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-200">
+                    <div className="rounded-3xl border border-destructive/20 bg-destructive/10 px-5 py-4 text-sm text-destructive">
                       {errors.form}
                     </div>
                   ) : null}
 
                   <div className="space-y-3">
-                    <label className="text-xs uppercase tracking-[0.35em] text-white/35">Email</label>
-                    <div className={cn('relative flex items-center gap-3 border-b-2 border-white/20 pb-4 transition-colors hover:border-white focus-within:border-[#00f0ff]', fieldError('email') && 'border-red-400 hover:border-red-400 focus-within:border-red-400')}>
-                      <Mail className="size-5 shrink-0 text-white/30" />
+                    <label className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Email</label>
+                    <div className={cn('relative flex items-center gap-3 border-b-2 border-border pb-4 transition-colors hover:border-ring focus-within:border-ring', fieldError('email') && 'border-destructive hover:border-destructive focus-within:border-destructive')}>
+                      <Mail className="size-5 shrink-0 text-muted-foreground" />
                       <input
                         type="email"
                         value={form.email}
                         onChange={(event) => setField('email', event.target.value)}
-                        className={cn('w-full bg-transparent text-2xl text-white outline-none placeholder:text-gray-600 md:text-4xl', fieldError('email') && 'placeholder:text-red-300/40')}
+                        className={cn('w-full bg-transparent text-2xl outline-none placeholder:text-muted-foreground/50 md:text-4xl', fieldError('email') && 'placeholder:text-destructive/40')}
                         placeholder="you@domain.com"
                         autoComplete="email"
                       />
                     </div>
-                    {fieldError('email') ? <p className="text-xs uppercase tracking-[0.3em] text-red-300">{fieldError('email')}</p> : null}
+                    {fieldError('email') ? <p className="text-xs uppercase tracking-[0.3em] text-destructive">{fieldError('email')}</p> : null}
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-xs uppercase tracking-[0.35em] text-white/35">Password</label>
-                    <div className={cn('relative flex items-center gap-3 border-b-2 border-white/20 pb-4 transition-colors hover:border-white focus-within:border-[#00f0ff]', fieldError('password') && 'border-red-400 hover:border-red-400 focus-within:border-red-400')}>
-                      <Lock className="size-5 shrink-0 text-white/30" />
+                    <label className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Password</label>
+                    <div className={cn('relative flex items-center gap-3 border-b-2 border-border pb-4 transition-colors hover:border-ring focus-within:border-ring', fieldError('password') && 'border-destructive hover:border-destructive focus-within:border-destructive')}>
+                      <Lock className="size-5 shrink-0 text-muted-foreground" />
                       <input
                         type={showPassword ? 'text' : 'password'}
                         value={form.password}
                         onChange={(event) => setField('password', event.target.value)}
-                        className={cn('w-full bg-transparent text-2xl text-white outline-none placeholder:text-gray-600 md:text-4xl', fieldError('password') && 'placeholder:text-red-300/40')}
+                        className={cn('w-full bg-transparent text-2xl outline-none placeholder:text-muted-foreground/50 md:text-4xl', fieldError('password') && 'placeholder:text-destructive/40')}
                         placeholder="••••••••"
                         autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword((current) => !current)}
-                        className="shrink-0 rounded-full border border-white/10 bg-white/5 p-2 text-white/60 transition-colors hover:text-white"
+                        className="shrink-0 rounded-full border border-border bg-muted/30 p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
                         aria-label={showPassword ? 'Hide password' : 'Show password'}
                       >
                         {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </button>
                     </div>
-                    {fieldError('password') ? <p className="text-xs uppercase tracking-[0.3em] text-red-300">{fieldError('password')}</p> : null}
+                    {fieldError('password') ? <p className="text-xs uppercase tracking-[0.3em] text-destructive">{fieldError('password')}</p> : null}
                   </div>
 
                   {mode === 'register' ? (
                     <div className="space-y-3">
-                      <label className="text-xs uppercase tracking-[0.35em] text-white/35">Role</label>
+                      <label className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Role</label>
                       <Select value={form.role} onValueChange={(value) => setField('role', value)}>
-                        <SelectTrigger className={cn(fieldError('role') && 'border-red-400/60 focus:border-red-400')}>
+                        <SelectTrigger className={cn("bg-transparent border-border h-14 text-lg", fieldError('role') && 'border-destructive focus:ring-destructive')}>
                           <SelectValue placeholder="Choose a role" />
                         </SelectTrigger>
                         <SelectContent>
@@ -240,18 +240,18 @@ function AuthPage() {
                           <SelectItem value="Mentor">Mentor</SelectItem>
                         </SelectContent>
                       </Select>
-                      {fieldError('role') ? <p className="text-xs uppercase tracking-[0.3em] text-red-300">{fieldError('role')}</p> : null}
+                      {fieldError('role') ? <p className="text-xs uppercase tracking-[0.3em] text-destructive">{fieldError('role')}</p> : null}
                     </div>
                   ) : null}
 
                   <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-sm text-white/45">
+                    <p className="text-sm text-muted-foreground">
                       {mode === 'login' ? 'Access your mentorship workspace.' : 'Create a new mentorship identity.'}
                     </p>
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="rounded-full bg-white/10 px-8 py-6 text-sm uppercase tracking-[0.35em] text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
+                      className="rounded-full bg-primary px-8 py-6 text-sm uppercase tracking-[0.35em] text-primary-foreground backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] active:scale-95 hover:bg-primary/90"
                     >
                       {submitting ? (
                         <span className="flex items-center gap-3">

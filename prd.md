@@ -7,30 +7,17 @@ The MentorshipHub design system utilizes a modern, "dark mode" aesthetic heavily
 
 ## 2. Color Palette
 
-*Note: Hex codes are approximated based on visual sampling of the dark theme and gradient glows.*
+*Note: The design system uses an OKLCH color palette defined via CSS variables for robust theming.*
 
-### Base Colors
-| Role | Color Name | Hex Code | Usage |
-| :--- | :--- | :--- | :--- |
-| **Background Base** | Deep Noir | `#09090B` | Main page background |
-| **Surface Base** | Glass Dark | `rgba(255, 255, 255, 0.03)` | Base fill for cards and floating navs |
-| **Surface Hover/Alt**| Glass Lighter | `rgba(255, 255, 255, 0.08)` | Hover states, icon backgrounds |
-| **Border Subtle** | Glass Border | `rgba(255, 255, 255, 0.12)` | Component borders, dividers |
+### Base Theme
+- **Background:** `oklch(1 0 0)` (Light) / `oklch(0.148 0.004 228.8)` (Dark)
+- **Foreground:** `oklch(0.148 0.004 228.8)` (Light) / `oklch(0.987 0.002 197.1)` (Dark)
 
-### Typography Colors
-| Role | Color Name | Hex Code | Usage |
-| :--- | :--- | :--- | :--- |
-| **Text Primary** | Pure White | `#FFFFFF` | Main headings, CTA text, card titles |
-| **Text Secondary**| Cool Gray | `#A1A1AA` | Subtitles, navbar links, footer text |
-| **Text Tertiary** | Dark Gray | `#71717A` | Metadata, copyright text |
-
-### Accent / Brand Colors (Glows & Gradients)
-| Role | Color Name | Hex Code | Usage |
-| :--- | :--- | :--- | :--- |
-| **Accent Primary** | Soft Indigo | `#818CF8` | Primary CTA buttons ("Get Started") |
-| **Glow Purple** | Neon Amethyst| `#8B5CF6` | Center of hero background aurora |
-| **Glow Blue** | Neon Cyan | `#06B6D4` | Right/Outer edges of background aurora |
-| **Glow Pink** | Neon Magenta | `#D946EF` | Left edges of background aurora |
+### Accent Colors
+- **Primary:** `oklch(0.553 0.195 38.402)` (Light) / `oklch(0.47 0.157 37.304)` (Dark)
+- **Secondary:** `oklch(0.967 0.001 286.375)` (Light) / `oklch(0.274 0.006 286.033)` (Dark)
+- **Muted:** `oklch(0.963 0.002 197.1)` (Light) / `oklch(0.275 0.011 216.9)` (Dark)
+- **Destructive:** `oklch(0.577 0.245 27.325)` (Light) / `oklch(0.704 0.191 22.216)` (Dark)
 
 ---
 

@@ -37,7 +37,7 @@ function SelectTrigger({ className, children, ...props }) {
       aria-expanded={context?.open}
       onClick={() => context?.setOpen((open) => !open)}
       className={cn(
-        'flex min-h-[4.5rem] w-full items-center justify-between border-b-2 border-white/20 bg-transparent pb-4 text-left text-2xl text-white outline-none transition-colors hover:border-white focus:border-[#00f0ff] md:text-4xl',
+        'flex min-h-[4.5rem] w-full items-center justify-between border-b-2 border-border bg-transparent pb-4 text-left text-2xl text-foreground outline-none transition-colors hover:border-ring focus:border-ring md:text-4xl',
         className,
       )}
       {...props}
@@ -49,7 +49,7 @@ function SelectTrigger({ className, children, ...props }) {
 
 function SelectValue({ placeholder }) {
   const context = React.useContext(SelectContext)
-  return <span className={cn(!context?.value && 'text-gray-600')}>{context?.value || placeholder}</span>
+  return <span className={cn(!context?.value && 'text-muted-foreground/50')}>{context?.value || placeholder}</span>
 }
 
 function SelectContent({ className, children, ...props }) {
@@ -61,7 +61,7 @@ function SelectContent({ className, children, ...props }) {
     <div
       role="listbox"
       className={cn(
-        'absolute z-50 mt-4 w-full overflow-hidden rounded-3xl border border-white/10 bg-black/90 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md',
+        'absolute z-50 mt-4 w-full overflow-hidden rounded-3xl border border-border bg-popover/80 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md text-popover-foreground',
         className,
       )}
       {...props}
@@ -84,8 +84,8 @@ function SelectItem({ value, className, children, ...props }) {
         context?.setOpen(false)
       }}
       className={cn(
-        'flex w-full items-center rounded-2xl px-4 py-4 text-left text-lg text-white/80 transition-colors hover:bg-white/10 hover:text-white md:text-xl',
-        context?.value === value && 'bg-white/10 text-white',
+        'flex w-full items-center rounded-2xl px-4 py-4 text-left text-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:text-xl',
+        context?.value === value && 'bg-muted text-foreground',
         className,
       )}
       {...props}
