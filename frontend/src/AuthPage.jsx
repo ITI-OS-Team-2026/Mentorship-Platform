@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5005/api'
 
 const initialFormState = {
   email: '',
@@ -121,33 +121,7 @@ function AuthPage() {
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-center px-6 py-10 md:px-10 lg:px-16">
-        <div className="grid w-full gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <section className="space-y-8">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-xs uppercase tracking-[0.35em] text-white/60 backdrop-blur-md">
-              <Sparkles className="size-4 text-cyan-300" />
-              Unified access
-            </div>
-            <div className="max-w-3xl space-y-6">
-              <h1 className="text-6xl font-bold uppercase tracking-tighter text-white md:text-8xl">
-                Build the next cohort.
-              </h1>
-              <p className="max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">
-                Login or register in one motion. The interface stays brutal, glassy, and luminous while the backend handles token issuance.
-              </p>
-            </div>
-
-            <div className="grid gap-4 text-sm text-white/55 sm:grid-cols-2">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-                <p className="uppercase tracking-[0.35em] text-white/35">Status</p>
-                <p className="mt-3 text-lg text-white">Cinematic auth flow</p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-                <p className="uppercase tracking-[0.35em] text-white/35">Mode</p>
-                <p className="mt-3 text-lg text-white">{mode === 'login' ? 'Returning member' : 'New creator'}</p>
-              </div>
-            </div>
-          </section>
-
+        <div className="grid w-full place-items-center">
           <section className="relative">
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md md:p-12">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />

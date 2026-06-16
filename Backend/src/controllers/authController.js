@@ -6,18 +6,29 @@ const generateToken = (id, role) => {
 };
 
 export const registerUser = async (req, res) => {
-  const { email, password, role } = req.body;
+  console.log("Register route hit with data:", req.body);
   
-  const userExists = await User.findOne({ email });
-  if (userExists) return res.status(400).json({ message: 'User already exists' });
+  try {
+    const { email, password, role } = req.body;
+    
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-  const user = await User.create({ email, password_hash: password, role });
-  if (user) {
-    res.status(201).json({
-      _id: user._id, email: user.email, role: user.role, token: generateToken(user._id, user.role)
-    });
-  } else {
-    res.status(400).json({ message: 'Invalid user data' });
+    const user = await User.create({ email, password_hash: password, role });
+    
+    if (user) {
+      res.status(201).json({
+        _id: user._id, 
+        email: user.email, 
+        role: user.role, 
+        token: generateToken(user._id, user.role)
+      });
+    } else {
+      res.status(400).json({ message: 'Invalid user data' });
+    }
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
