@@ -101,3 +101,61 @@ export const getMentorAvailability = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
+export const createMentorAvailability = async (req, res) => {
+  try {
+    const { day_of_week, start_time, end_time } = req.body;
+
+    if (!day_of_week || !start_time || !end_time) {
+      return res.status(400).json({
+        success: false,
+        message: 'day_of_week, start_time, and end_time are required'
+      });
+    }
+
+    if (end_time <= start_time) {
+      return res.status(400).json({
+        success: false,
+        message: 'end_time must be greater than start_time'
+      });
+    }
+
+    const mentorProfile = await MentorProfile.findOne({ user_id: req.user._id });
+
+    if (!mentorProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mentor profile not found'
+      });
+    }
+
+    const existingSlots = await MentorAvailability.find({
+      mentor_id: mentorProfile._id,
+      day_of_week
+    });
+
+    for (const slot of existingSlots) {
+      if (start_time < slot.end_time && end_time > slot.start_time) {
+        return res.status(400).json({
+          success: false,
+          message: 'Availability slot overlaps with an existing slot'
+        });
+      }
+    }
+
+    const availability = await MentorAvailability.create({
+      mentor_id: mentorProfile._id,
+      day_of_week,
+      start_time,
+      end_time
+    });
+
+    res.status(201).json({
+      success: true,
+      availability
+    });
+  } catch (error) {
+    console.error('Error creating mentor availability:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
