@@ -1,4 +1,5 @@
 import MentorProfile from '../models/MentorProfile.js';
+import MentorAvailability from '../models/MentorAvailability.js';
 
 export const getMentorProfile = async (req, res) => {
   try {
@@ -73,6 +74,30 @@ export const updateMentorProfile = async (req, res) => {
     });
   } catch (error) {
     console.error('Error updating mentor profile:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const getMentorAvailability = async (req, res) => {
+  try {
+    const mentorProfile = await MentorProfile.findOne({ user_id: req.user._id });
+
+    if (!mentorProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mentor profile not found'
+      });
+    }
+
+    const availability = await MentorAvailability.find({ mentor_id: mentorProfile._id })
+      .sort({ day_of_week: 1, start_time: 1 });
+
+    res.json({
+      success: true,
+      availability
+    });
+  } catch (error) {
+    console.error('Error fetching mentor availability:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
