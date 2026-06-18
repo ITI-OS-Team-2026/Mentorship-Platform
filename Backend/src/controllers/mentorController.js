@@ -1,5 +1,6 @@
 import MentorProfile from '../models/MentorProfile.js';
 import MentorAvailability from '../models/MentorAvailability.js';
+import Session from '../models/Session.js';
 import mongoose from 'mongoose';
 
 const handleControllerError = (res, error, context) => {
@@ -295,5 +296,29 @@ export const deleteMentorAvailability = async (req, res) => {
     });
   } catch (error) {
     handleControllerError(res, error, 'deleting mentor availability');
+  }
+};
+
+export const getMentorSessions = async (req, res) => {
+  try {
+    const mentorProfile = await MentorProfile.findOne({ user_id: req.user._id });
+
+    if (!mentorProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mentor profile not found'
+      });
+    }
+
+    const sessions = await Session.find({ mentor_id: mentorProfile._id })
+      .populate('student_id', 'name email')
+      .sort({ scheduled_date: 1, start_time: 1 });
+
+    res.json({
+      success: true,
+      sessions
+    });
+  } catch (error) {
+    handleControllerError(res, error, 'fetching mentor sessions');
   }
 };

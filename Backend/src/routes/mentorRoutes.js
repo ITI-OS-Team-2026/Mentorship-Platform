@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMentorProfile, updateMentorProfile, getMentorAvailability, createMentorAvailability, updateMentorAvailability, deleteMentorAvailability } from '../controllers/mentorController.js';
+import { getMentorProfile, updateMentorProfile, getMentorAvailability, createMentorAvailability, updateMentorAvailability, deleteMentorAvailability, getMentorSessions } from '../controllers/mentorController.js';
 import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -10,5 +10,6 @@ router.get('/availability', protect, authorizeRoles('Mentor'), getMentorAvailabi
 router.post('/availability', protect, authorizeRoles('Mentor'), createMentorAvailability);
 router.put('/availability/:id', protect, authorizeRoles('Mentor'), updateMentorAvailability);
 router.delete('/availability/:id', protect, authorizeRoles('Mentor'), deleteMentorAvailability);
+router.get('/sessions', protect, authorizeRoles('Mentor'), getMentorSessions);
 
 export default router;
