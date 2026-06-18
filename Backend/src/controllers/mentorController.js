@@ -433,3 +433,30 @@ export const updateSessionStatus = async (req, res) => {
     handleControllerError(res, error, 'updating session status');
   }
 };
+
+export const getMentorSessionHistory = async (req, res) => {
+  try {
+    const mentorProfile = await MentorProfile.findOne({ user_id: req.user._id });
+
+    if (!mentorProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mentor profile not found'
+      });
+    }
+
+    const sessions = await Session.find({
+      mentor_id: mentorProfile._id,
+      status: { $in: ['completed', 'canceled'] }
+    })
+      .populate('student_id', 'name email')
+      .sort({ scheduled_date: -1 });
+
+    res.json({
+      success: true,
+      sessions
+    });
+  } catch (error) {
+    handleControllerError(res, error, 'fetching mentor session history');
+  }
+};
