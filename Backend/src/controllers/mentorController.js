@@ -378,3 +378,58 @@ export const updateSessionNotes = async (req, res) => {
     handleControllerError(res, error, 'updating session notes');
   }
 };
+
+export const updateSessionStatus = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid session id'
+      });
+    }
+
+    const mentorProfile = await MentorProfile.findOne({ user_id: req.user._id });
+
+    if (!mentorProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mentor profile not found'
+      });
+    }
+
+    const session = await Session.findById(req.params.id);
+
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+
+    if (session.mentor_id.toString() !== mentorProfile._id.toString()) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+
+    const { status } = req.body;
+
+    if (status !== 'completed' && status !== 'canceled') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status'
+      });
+    }
+
+    session.status = status;
+    await session.save();
+
+    res.json({
+      success: true,
+      session
+    });
+  } catch (error) {
+    handleControllerError(res, error, 'updating session status');
+  }
+};
