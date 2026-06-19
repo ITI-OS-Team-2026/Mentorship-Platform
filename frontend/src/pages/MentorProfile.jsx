@@ -1,14 +1,85 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { toast } from 'sonner';
+
+const getInitials = (name) => {
+  if (!name) return 'M';
+  return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+};
+
+const generateAvailableDates = (availList) => {
+  if (!availList || availList.length === 0) return [];
+  const daysMap = { 'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6 };
+  const availableDays = availList.map(a => daysMap[a.day_of_week]);
+
+  const dates = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+
+    if (availableDays.includes(date.getDay())) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const dayStr = String(date.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${dayStr}`;
+
+      const displayLabel = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      dates.push({ value: formattedDate, label: displayLabel });
+    }
+  }
+  return dates;
+};
+
+const getSlotsForDate = (dateStr, availList) => {
+  if (!dateStr || !availList || availList.length === 0) return [];
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const localDate = new Date(y, m - 1, d);
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayName = days[localDate.getDay()];
+
+  const dayAvails = availList.filter(a => a.day_of_week === dayName);
+  const slots = [];
+  const now = new Date();
+
+  dayAvails.forEach(avail => {
+    let [startH, startM] = avail.start_time.split(':').map(Number);
+    let [endH, endM] = avail.end_time.split(':').map(Number);
+
+    let currentStart = new Date(localDate);
+    currentStart.setHours(startH, startM, 0, 0);
+
+    let blockEnd = new Date(localDate);
+    blockEnd.setHours(endH, endM, 0, 0);
+
+    while (true) {
+      let slotEnd = new Date(currentStart);
+      slotEnd.setMinutes(currentStart.getMinutes() + 45);
+
+      if (slotEnd <= blockEnd) {
+        if (currentStart > now) {
+          const timeStr = currentStart.toTimeString().substring(0, 5);
+          slots.push(timeStr);
+        }
+        currentStart = new Date(slotEnd);
+      } else {
+        break;
+      }
+    }
+  });
+
+  return slots;
+};
 
 const MentorProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const token = user?.token;
-  
+
   const [mentor, setMentor] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +87,14 @@ const MentorProfile = () => {
   const [bookingDate, setBookingDate] = useState('');
   const [bookingTime, setBookingTime] = useState('');
   const [description, setDescription] = useState('');
+
+  // Derive available dates and slots from availability — avoids setState-in-effect antipattern
+  const availableDates = useMemo(() => generateAvailableDates(availability), [availability]);
+  const effectiveDate = bookingDate || availableDates[0]?.value || '';
+  const availableSlots = useMemo(
+    () => getSlotsForDate(effectiveDate, availability),
+    [effectiveDate, availability]
+  );
 
   useEffect(() => {
     const fetchMentor = async () => {
@@ -29,7 +108,7 @@ const MentorProfile = () => {
           toast.error('Mentor not found');
           navigate('/mentors');
         }
-      } catch (err) {
+      } catch {
         toast.error('Failed to load mentor details');
       } finally {
         setLoading(false);
@@ -41,13 +120,13 @@ const MentorProfile = () => {
   const handleSlotClick = (slot) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const targetDay = days.indexOf(slot.day_of_week);
-    
+
     if (targetDay !== -1) {
       const today = new Date();
       const currentDay = today.getDay();
-      
+
       let daysUntil = targetDay - currentDay;
-      
+
       if (daysUntil < 0) {
         daysUntil += 7;
       } else if (daysUntil === 0) {
@@ -56,17 +135,16 @@ const MentorProfile = () => {
           daysUntil += 7;
         }
       }
-      
+
       const nextDate = new Date(today);
       nextDate.setDate(today.getDate() + daysUntil);
-      
-      // Need local date string, ISOString uses UTC which might shift the date backwards by 1 day
+
       const year = nextDate.getFullYear();
       const month = String(nextDate.getMonth() + 1).padStart(2, '0');
       const day = String(nextDate.getDate()).padStart(2, '0');
-      
+
       setBookingDate(`${year}-${month}-${day}`);
-      setBookingTime(slot.start_time);
+      setBookingTime(''); // User needs to pick exact 45-min chunk
       toast.success(`Selected upcoming ${slot.day_of_week}`);
     }
   };
@@ -85,7 +163,6 @@ const MentorProfile = () => {
     }
 
     const start_time = bookingTime; // HH:MM
-    // Compute end_time (+45 mins)
     const [hours, minutes] = start_time.split(':').map(Number);
     let dateObj = new Date(2000, 0, 1, hours, minutes);
     dateObj.setMinutes(dateObj.getMinutes() + 45);
@@ -94,12 +171,12 @@ const MentorProfile = () => {
     try {
       const res = await fetch(`http://localhost:5005/api/student/sessions`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          mentor_id: mentor._id, // This is the MentorProfile ID
+          mentor_id: mentor._id,
           scheduled_date: bookingDate,
           start_time,
           end_time,
@@ -108,104 +185,166 @@ const MentorProfile = () => {
       });
 
       const data = await res.json();
-      
+
       if (res.ok) {
         toast.success('Session booked successfully!');
         navigate('/student/dashboard');
       } else {
         toast.error(data.message || 'Failed to book session');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error during booking');
     }
   };
 
-  if (loading) return <div className="text-center py-20 text-muted-foreground animate-pulse">Loading profile...</div>;
+  if (loading) return <div className="text-center py-32 text-muted-foreground animate-pulse">Loading profile...</div>;
   if (!mentor) return null;
 
   return (
-    <div className="container mx-auto px-4 pt-32 pb-12 max-w-6xl flex flex-col lg:flex-row gap-8">
-      {/* Left Column: Profile */}
-      <div className="flex-1 space-y-6">
-        <div className="glass-panel p-8 md:p-12 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,_rgba(129,140,248,0.1)_0%,_transparent_50%)] pointer-events-none" />
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-2 uppercase tracking-tighter">{mentor.name}</h1>
-          <p className="text-xl text-accent-primary mb-6 font-medium tracking-wide">{mentor.title}</p>
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <span className="text-yellow-400 font-bold flex items-center gap-1 bg-surface-base px-3 py-1 rounded-pill">
-              ★ {mentor.average_rating.toFixed(1)}
-            </span>
-            <span className="text-primary bg-surface-base px-3 py-1 rounded-pill font-medium">${mentor.hourly_rate}/hr</span>
-            {mentor.stack_id && <span className="bg-surface-hover px-3 py-1 rounded-pill text-sm text-muted-foreground border border-border-subtle">{mentor.stack_id.name}</span>}
+    <div className="container mx-auto px-4 pt-32 pb-12 max-w-[1100px] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      {/* Left Column: Profile & Availability */}
+      <div className="lg:col-span-7 space-y-6">
+        <div className="glass-panel p-6 md:p-8">
+          {/* Header section with Avatar */}
+          <div className="flex flex-col md:flex-row gap-6 items-start md:items-center border-b border-border-subtle pb-6 mb-6">
+            <div className="size-24 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20 shrink-0 shadow-inner">
+              <span className="text-3xl font-bold text-primary">{getInitials(mentor.name)}</span>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground mb-1">{mentor.name}</h1>
+              <p className="text-lg text-primary font-medium mb-4">{mentor.title}</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="flex items-center gap-1 bg-background/50 border border-border-subtle px-3 py-1 rounded-full text-sm font-medium text-foreground">
+                  <span className="text-primary">★</span> {mentor.average_rating.toFixed(1)}
+                </span>
+                <span className="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-sm font-medium">
+                  ${mentor.hourly_rate}/hr
+                </span>
+                {mentor.stack_id && (
+                  <span className="bg-muted px-3 py-1 rounded-full text-sm text-muted-foreground border border-border">
+                    {mentor.stack_id.name}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-          
-          <h2 className="text-xl font-semibold mb-4 text-white">About</h2>
-          <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{mentor.bio || "This mentor hasn't added a bio yet."}</p>
+
+          {/* Bio Section */}
+          <div>
+            <h2 className="text-lg font-semibold mb-3 text-foreground">About</h2>
+            {mentor.bio ? (
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{mentor.bio}</p>
+            ) : (
+              <div className="bg-muted/30 border border-dashed border-border rounded-lg p-6 text-center">
+                <p className="text-muted-foreground italic">No professional bio has been provided yet.</p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="glass-panel p-8">
-          <h2 className="text-xl font-semibold mb-6">Availability Overview</h2>
-          {availability.length === 0 ? (
-            <p className="text-muted-foreground text-sm p-4 border border-dashed border-border-subtle rounded-lg text-center">This mentor has not set up their weekly schedule yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Availability Section */}
+        {availability.length > 0 && (
+          <div className="glass-panel p-6 md:p-8">
+            <h2 className="text-lg font-semibold mb-4 text-foreground">Availability Overview</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {availability.map((slot, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   onClick={() => handleSlotClick(slot)}
-                  className="flex justify-between items-center p-4 bg-surface-base border border-border-subtle rounded-lg hover:bg-surface-hover hover:border-accent-primary transition-colors cursor-pointer"
+                  className="flex justify-between items-center p-3 bg-background/50 border border-border-subtle rounded-md hover:bg-muted hover:border-primary/50 transition-colors cursor-pointer group"
                 >
-                  <span className="text-white font-medium">{slot.day_of_week}</span>
-                  <span className="text-accent-primary text-sm font-mono bg-black/20 px-2 py-1 rounded">{slot.start_time} - {slot.end_time}</span>
+                  <span className="text-foreground font-medium group-hover:text-primary transition-colors">{slot.day_of_week}</span>
+                  <span className="text-muted-foreground text-sm font-mono bg-muted px-2 py-1 rounded">{slot.start_time} - {slot.end_time}</span>
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Right Column: Booking Form */}
-      <div className="w-full lg:w-[400px]">
-        <div className="glass-panel p-6 md:p-8 sticky top-24">
-          <h2 className="text-2xl font-semibold mb-6 uppercase tracking-tight">Reserve Slot</h2>
-          <form onSubmit={handleBooking} className="space-y-5">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Select Date</label>
-              <input 
-                type="date" 
-                required
-                min={new Date().toISOString().split('T')[0]}
-                value={bookingDate}
-                onChange={(e) => setBookingDate(e.target.value)}
-                className="w-full bg-surface-base border border-border-subtle rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-accent-primary transition-colors"
-              />
+      <div className="lg:col-span-5">
+        <div className="glass-panel border-t-4 border-t-primary shadow-xl p-6 md:p-8 sticky top-24 bg-card/95 backdrop-blur-xl">
+          <div className="mb-6 border-b border-border-subtle pb-4">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Reserve Slot</h2>
+            <p className="text-sm text-muted-foreground mt-1">Book a 45-minute 1-on-1 session</p>
+          </div>
+
+          {availability.length === 0 ? (
+            <div className="bg-muted/30 border border-dashed border-border rounded-lg p-6 text-center">
+              <p className="text-muted-foreground">This mentor has not published any available time slots.</p>
+              <button disabled className="w-full btn-primary py-3 text-base tracking-wide mt-6 opacity-50 cursor-not-allowed">
+                Booking Unavailable
+              </button>
             </div>
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Start Time (HH:MM)</label>
-              <input 
-                type="time" 
-                required
-                value={bookingTime}
-                onChange={(e) => setBookingTime(e.target.value)}
-                className="w-full bg-surface-base border border-border-subtle rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-accent-primary transition-colors"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Sessions are strictly isolated 45-minute code evaluations.</p>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Submission Context</label>
-              <textarea 
-                required
-                rows={4}
-                placeholder="What do you want to review? (e.g. async race condition in Node)"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-surface-base border border-border-subtle rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-accent-primary transition-colors resize-none"
-              ></textarea>
-            </div>
-            <button type="submit" className="w-full btn-primary py-4 text-base tracking-wide mt-4 shadow-[0_0_20px_rgba(129,140,248,0.3)] hover:shadow-[0_0_30px_rgba(129,140,248,0.5)] transition-shadow">
-              Secure 45-min Session
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleBooking} className="space-y-5">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Select Date</label>
+                <div className="relative">
+                  <select
+                    required
+                    value={effectiveDate}
+                    onChange={(e) => { setBookingDate(e.target.value); setBookingTime(''); }}
+                    className="w-full bg-background border border-border-subtle rounded-md px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none cursor-pointer"
+                  >
+                    <option value="" disabled>Choose a date</option>
+                    {availableDates.map(date => (
+                      <option key={date.value} value={date.value}>{date.label}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Available Slots</label>
+                {availableSlots.length === 0 ? (
+                  <div className="bg-background border border-border-subtle rounded-md px-4 py-3 text-sm text-muted-foreground text-center">
+                    No remaining slots for this date
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {availableSlots.map(time => (
+                      <button
+                        key={time}
+                        type="button"
+                        onClick={() => setBookingTime(time)}
+                        className={`py-2 px-1 text-sm rounded-md transition-colors border ${bookingTime === time
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-background text-foreground border-border-subtle hover:border-primary/50 hover:bg-muted'
+                          }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground mt-2">Sessions are strictly isolated 45-minute code evaluations.</p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">Submission Context</label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="What do you want to review? (e.g. async race condition in Node)"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full bg-background border border-border-subtle rounded-md px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                disabled={!bookingDate || !bookingTime}
+                className="w-full btn-primary py-3 text-base tracking-wide mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Secure 45-min Session
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>
