@@ -1,6 +1,18 @@
 import { Link } from 'react-router-dom'
+import { useAuthStore } from '../store/authStore'
+
+const getDashboardUrl = (role) => {
+  switch (role) {
+    case 'Admin': return '/admin/dashboard';
+    case 'Mentor': return '/mentor/dashboard';
+    case 'Student': return '/student/dashboard';
+    default: return '/';
+  }
+}
 
 export function MinimalistFooter() {
+  const { user, isAuthenticated } = useAuthStore()
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
@@ -25,12 +37,22 @@ export function MinimalistFooter() {
           >
             Mentors
           </Link>
-          <Link
-            to="/login"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Login
-          </Link>
+          
+          {isAuthenticated ? (
+            <Link
+              to={getDashboardUrl(user?.role)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Login
+            </Link>
+          )}
         </nav>
       </div>
     </footer>
