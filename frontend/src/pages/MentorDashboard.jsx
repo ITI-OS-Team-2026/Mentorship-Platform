@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { toast } from 'sonner';
 
@@ -77,7 +77,7 @@ const MentorDashboard = () => {
           const stData = await stackRes.json();
           setStacks(stData);
         }
-      } catch (err) {
+      } catch {
         toast.error('Failed to load mentor workspace');
       } finally {
         setLoading(false);
@@ -103,7 +103,7 @@ const MentorDashboard = () => {
       } else {
         toast.error(data.message || 'Update failed');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error');
     }
   };
@@ -124,7 +124,7 @@ const MentorDashboard = () => {
       } else {
         toast.error(data.message || 'Failed to add slot');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error');
     }
   };
@@ -141,7 +141,7 @@ const MentorDashboard = () => {
       } else {
         toast.error('Failed to delete slot');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error');
     }
   };
@@ -177,7 +177,7 @@ const MentorDashboard = () => {
       } else {
         toast.error(data.message || 'Update failed');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error');
     }
   };
@@ -200,26 +200,29 @@ const MentorDashboard = () => {
       } else {
         toast.error(data.message || 'Update failed');
       }
-    } catch (err) {
+    } catch {
       toast.error('Network error');
     }
   };
 
   return (
-    <div className="container mx-auto px-4 pt-32 pb-12 max-w-6xl">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-extrabold uppercase tracking-tighter text-orange-500">Mentor Workspace</h1>
+    <div className="container mx-auto px-4 pt-32 pb-12 max-w-7xl">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-8">
+        <div className="flex-1">
+          <h1 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter text-primary mb-2">Mentor Workspace</h1>
+          <p className="text-muted-foreground text-base">Manage your profile, availability, and sessions</p>
+        </div>
       </div>
 
-      <div className="flex border-b border-border-subtle mb-8">
+      <div className="flex border-b border-border/60 mb-8 gap-1">
         {['profile', 'availability', 'sessions', 'history'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             disabled={!profile && tab !== 'profile'}
-            className={`px-6 py-3 uppercase tracking-wider font-semibold text-sm transition-colors ${
+            className={`px-6 py-3 uppercase tracking-wider font-semibold text-sm transition-all rounded-full ${
               !profile && tab !== 'profile' ? 'opacity-50 cursor-not-allowed text-muted-foreground' :
-              activeTab === tab ? 'text-orange-500 border-b-2 border-orange-500 bg-surface-hover' : 'text-muted-foreground hover:text-white hover:bg-surface-base'
+              activeTab === tab ? 'text-primary bg-primary/10 border border-primary/20' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             }`}
           >
             {tab}
@@ -234,77 +237,117 @@ const MentorDashboard = () => {
           
           {/* PROFILE TAB */}
           {activeTab === 'profile' && (
-            <div className="glass-panel p-8">
+            <div className="glass-panel p-6 md:p-8">
               {!profile && (
-                <div className="mb-6 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg text-orange-500">
-                  Welcome to MentHub! Please initialize your profile to start accepting sessions.
+                <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-2xl text-primary flex items-start gap-3">
+                  <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <div>
+                    <p className="font-semibold mb-1">Welcome to MentHub!</p>
+                    <p className="text-sm">Please initialize your profile to start accepting sessions.</p>
+                  </div>
                 </div>
               )}
               <h2 className="text-2xl font-semibold mb-6">Profile Settings</h2>
-              <form onSubmit={handleUpdateProfile} className="space-y-4 max-w-2xl">
-                <div>
-                  <label className="block text-xs uppercase text-muted-foreground mb-1">Full Name</label>
-                  <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white" />
+              <div className="grid lg:grid-cols-2 gap-8">
+                <form onSubmit={handleUpdateProfile} className="space-y-5">
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Full Name</label>
+                    <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Title</label>
+                    <input type="text" required value={title} onChange={e => setTitle(e.target.value)} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Technology Stack</label>
+                    <select required value={selectedStack} onChange={e => setSelectedStack(e.target.value)} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                      <option value="" disabled className="bg-background text-muted-foreground">Select your primary stack...</option>
+                      {stacks.map(s => <option key={s._id} value={s._id} className="bg-background text-foreground">{s.name}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Hourly Rate ($)</label>
+                    <input type="number" required value={hourlyRate} onChange={e => setHourlyRate(e.target.value === '' ? '' : Number(e.target.value))} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Bio</label>
+                    <textarea rows={4} value={bio} onChange={e => setBio(e.target.value)} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none" placeholder="Tell students about your experience and expertise..."></textarea>
+                  </div>
+                  <button type="submit" className="bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3 hover:bg-primary/90 transition-colors mt-2">{profile ? 'Update Profile' : 'Initialize Profile'}</button>
+                </form>
+                <div className="bg-card/50 border border-border/60 rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold mb-4">Profile Preview</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">{name?.charAt(0) || '?'}</div>
+                      <div>
+                        <p className="font-semibold text-foreground">{name || 'Your Name'}</p>
+                        <p className="text-sm text-muted-foreground">{title || 'Your Title'}</p>
+                      </div>
+                    </div>
+                    <div className="border-t border-border/60 pt-4">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Hourly Rate</p>
+                      <p className="text-2xl font-bold text-primary">${hourlyRate || 0}<span className="text-sm font-normal text-muted-foreground">/hr</span></p>
+                    </div>
+                    <div className="border-t border-border/60 pt-4">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Technology Stack</p>
+                      <p className="text-foreground">{stacks.find(s => s._id === selectedStack)?.name || 'Not selected'}</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs uppercase text-muted-foreground mb-1">Title</label>
-                  <input type="text" required value={title} onChange={e => setTitle(e.target.value)} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white" />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase text-muted-foreground mb-1">Technology Stack</label>
-                  <select required value={selectedStack} onChange={e => setSelectedStack(e.target.value)} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white">
-                    <option value="" disabled className="bg-zinc-900 text-white">Select your primary stack...</option>
-                    {stacks.map(s => <option key={s._id} value={s._id} className="bg-zinc-900 text-white">{s.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs uppercase text-muted-foreground mb-1">Hourly Rate ($)</label>
-                  <input type="number" required value={hourlyRate} onChange={e => setHourlyRate(e.target.value === '' ? '' : Number(e.target.value))} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white" />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase text-muted-foreground mb-1">Bio</label>
-                  <textarea rows={4} value={bio} onChange={e => setBio(e.target.value)} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white"></textarea>
-                </div>
-                <button type="submit" className="bg-orange-500 text-white font-medium rounded-pill px-5 py-2 transition-transform active:scale-95 mt-4">{profile ? 'Update Profile' : 'Initialize Profile'}</button>
-              </form>
+              </div>
             </div>
           )}
 
           {/* AVAILABILITY TAB */}
           {activeTab === 'availability' && profile && (
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="glass-panel p-8">
-                <h2 className="text-xl font-semibold mb-4">Add New Slot</h2>
-                <form onSubmit={handleAddAvailability} className="space-y-4">
+              <div className="glass-panel p-6 md:p-8">
+                <h2 className="text-xl font-semibold mb-6">Add New Slot</h2>
+                <form onSubmit={handleAddAvailability} className="space-y-6">
                   <div>
-                    <label className="block text-xs uppercase text-muted-foreground mb-1">Day of Week</label>
-                    <select value={newDay} onChange={e => setNewDay(e.target.value)} className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white">
-                      {['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d => <option key={d} value={d} className="bg-zinc-900 text-white">{d}</option>)}
+                    <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Day of Week</label>
+                    <select value={newDay} onChange={e => setNewDay(e.target.value)} className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                      {['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d => <option key={d} value={d} className="bg-background text-foreground">{d}</option>)}
                     </select>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="block text-xs uppercase text-muted-foreground mb-1">Start Time</label>
-                      <input type="time" value={newStart} onChange={e => setNewStart(e.target.value)} required className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Start Time</label>
+                      <input type="time" value={newStart} onChange={e => setNewStart(e.target.value)} required className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all [color-scheme:dark]" />
                     </div>
-                    <div className="flex-1">
-                      <label className="block text-xs uppercase text-muted-foreground mb-1">End Time</label>
-                      <input type="time" value={newEnd} onChange={e => setNewEnd(e.target.value)} required className="w-full bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-white" />
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">End Time</label>
+                      <input type="time" value={newEnd} onChange={e => setNewEnd(e.target.value)} required className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all [color-scheme:dark]" />
                     </div>
                   </div>
-                  <button type="submit" className="bg-orange-500 text-white font-medium rounded-pill px-5 py-2 transition-transform active:scale-95 w-full mt-2">Add Time Slot</button>
+                  <button type="submit" className="bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3 hover:bg-primary/90 transition-colors w-full">Add Time Slot</button>
                 </form>
               </div>
 
-              <div className="glass-panel p-8">
-                <h2 className="text-xl font-semibold mb-4">Current Availability</h2>
-                {availability.length === 0 ? <p className="text-muted-foreground">No slots configured.</p> : (
-                  <ul className="space-y-2">
+              <div className="glass-panel p-6 md:p-8">
+                <h2 className="text-xl font-semibold mb-6">Current Availability</h2>
+                {availability.length === 0 ? (
+                  <div className="text-center py-16">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-card/50 flex items-center justify-center">
+                      <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-muted-foreground text-base">No slots configured yet.</p>
+                    <p className="text-muted-foreground text-sm mt-1">Add your first availability slot above.</p>
+                  </div>
+                ) : (
+                  <ul className="space-y-3">
                     {availability.map(slot => (
-                      <li key={slot._id} className="flex justify-between items-center p-3 bg-surface-base border border-border-subtle rounded-lg">
-                        <span className="font-semibold text-white">{slot.day_of_week}</span>
-                        <span className="text-orange-500 font-mono text-sm">{slot.start_time} - {slot.end_time}</span>
-                        <button onClick={() => handleDeleteAvailability(slot._id)} className="text-destructive text-sm hover:underline">Delete</button>
+                      <li key={slot._id} className="flex justify-between items-center p-4 bg-card/50 border border-border/60 rounded-2xl hover:bg-card/70 transition-colors">
+                        <span className="font-semibold text-foreground">{slot.day_of_week}</span>
+                        <div className="flex items-center gap-4">
+                          <span className="text-primary font-mono text-sm">{slot.start_time} - {slot.end_time}</span>
+                          <button onClick={() => handleDeleteAvailability(slot._id)} className="text-destructive text-sm hover:text-destructive/80 transition-colors px-4 py-2 rounded-full hover:bg-destructive/10 font-medium">Delete</button>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -315,46 +358,56 @@ const MentorDashboard = () => {
 
           {/* SESSIONS TAB */}
           {activeTab === 'sessions' && profile && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {sessions.length === 0 ? (
-                <div className="glass-panel p-12 text-center text-muted-foreground">No incoming sessions.</div>
+                <div className="glass-panel p-16 text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-card/50 flex items-center justify-center">
+                    <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-muted-foreground text-base">No incoming sessions.</p>
+                  <p className="text-muted-foreground text-sm mt-1">Students will appear here when they book sessions with you.</p>
+                </div>
               ) : (
                 sessions.map(session => (
                   <div key={session._id} className="glass-panel p-6">
-                    <div className="flex flex-col md:flex-row justify-between mb-4">
-                      <div>
-                        <h3 className="font-bold text-lg text-white">Session with {session.student_id?.name || 'Student'}</h3>
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl text-foreground mb-2">Session with {session.student_id?.name || 'Student'}</h3>
                         <p className="text-muted-foreground font-mono text-sm">{new Date(session.scheduled_date).toLocaleDateString()} | {session.start_time} - {session.end_time}</p>
                       </div>
-                      <div className="mt-2 md:mt-0 flex items-center gap-2">
-                        <span className={`px-3 py-1 text-xs uppercase tracking-wider font-semibold rounded-pill ${session.status === 'scheduled' ? 'bg-orange-500/20 text-orange-500' : session.status === 'canceled' ? 'bg-destructive/20 text-destructive' : 'bg-green-500/20 text-green-400'}`}>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className={`px-4 py-2 text-xs uppercase tracking-wider font-semibold rounded-full ${session.status === 'scheduled' ? 'bg-primary/20 text-primary' : session.status === 'canceled' ? 'bg-destructive/20 text-destructive' : 'bg-green-500/20 text-green-400'}`}>
                           {session.status}
                         </span>
                         {session.status === 'scheduled' && (
                           <div className="flex gap-2">
-                            <button onClick={() => handleUpdateSessionStatus(session._id, 'completed')} className="text-xs px-3 py-1 bg-green-500/20 text-green-400 rounded-pill hover:bg-green-500 hover:text-white transition-colors">Complete</button>
-                            <button onClick={() => handleUpdateSessionStatus(session._id, 'canceled')} className="text-xs px-3 py-1 bg-destructive/20 text-destructive rounded-pill hover:bg-destructive hover:text-white transition-colors">Cancel</button>
+                            <button onClick={() => handleUpdateSessionStatus(session._id, 'completed')} className="text-xs px-4 py-2 bg-green-500/20 text-green-400 rounded-full hover:bg-green-500 hover:text-white transition-colors font-medium">Complete</button>
+                            <button onClick={() => handleUpdateSessionStatus(session._id, 'canceled')} className="text-xs px-4 py-2 bg-destructive/20 text-destructive rounded-full hover:bg-destructive hover:text-white transition-colors font-medium">Cancel</button>
                           </div>
                         )}
                       </div>
                     </div>
                     
-                    <div className="bg-surface-base p-4 rounded-lg border border-border-subtle mb-4">
-                      <p className="text-xs uppercase text-muted-foreground font-semibold mb-1">Student Context</p>
-                      <p className="text-sm">{session.submission_description}</p>
+                    <div className="bg-card/50 p-5 rounded-2xl border border-border/60 mb-6">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Student Context</p>
+                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{session.submission_description}</p>
                     </div>
 
                     <div>
-                      <p className="text-xs uppercase text-muted-foreground font-semibold mb-1">Your Evaluation Notes</p>
-                      <div className="flex gap-2">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Your Evaluation Notes</p>
+                      <div className="flex flex-col gap-3">
                         <textarea 
-                          rows={2} 
+                          rows={4} 
                           placeholder="Provide feedback..."
-                          className="flex-1 bg-surface-base border border-border-subtle rounded-md px-3 py-2 text-sm text-white"
+                          className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-y min-h-[100px]"
                           value={notesDraft[session._id] !== undefined ? notesDraft[session._id] : (session.mentor_notes || '')}
                           onChange={e => setNotesDraft({ ...notesDraft, [session._id]: e.target.value })}
                         ></textarea>
-                        <button onClick={() => handleUpdateNotes(session._id)} className="bg-surface-hover border border-border-subtle px-4 rounded-md text-sm hover:bg-white hover:text-black transition-colors">Save Notes</button>
+                        <div className="flex justify-end">
+                          <button onClick={() => handleUpdateNotes(session._id)} className="bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3 hover:bg-primary/90 transition-colors">Save Notes</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -365,42 +418,52 @@ const MentorDashboard = () => {
 
           {/* HISTORY TAB */}
           {activeTab === 'history' && profile && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {history.length === 0 ? (
-                <div className="glass-panel p-12 text-center text-muted-foreground">No completed or canceled sessions found.</div>
+                <div className="glass-panel p-16 text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-card/50 flex items-center justify-center">
+                    <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-muted-foreground text-base">No completed or canceled sessions found.</p>
+                  <p className="text-muted-foreground text-sm mt-1">Your session history will appear here.</p>
+                </div>
               ) : (
                 history.map(session => (
                   <div key={session._id} className="glass-panel p-6">
-                    <div className="flex flex-col md:flex-row justify-between mb-4">
-                      <div>
-                        <h3 className="font-bold text-lg text-white">Session with {session.student_id?.name || 'Student'}</h3>
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl text-foreground mb-2">Session with {session.student_id?.name || 'Student'}</h3>
                         <p className="text-muted-foreground font-mono text-sm">{new Date(session.scheduled_date).toLocaleDateString()} | {session.start_time} - {session.end_time}</p>
                       </div>
-                      <div className="mt-2 md:mt-0 flex items-center gap-2">
-                        <span className={`px-3 py-1 text-xs uppercase tracking-wider font-semibold rounded-pill ${session.status === 'scheduled' ? 'bg-orange-500/20 text-orange-500' : session.status === 'canceled' ? 'bg-destructive/20 text-destructive' : 'bg-green-500/20 text-green-400'}`}>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className={`px-4 py-2 text-xs uppercase tracking-wider font-semibold rounded-full ${session.status === 'scheduled' ? 'bg-primary/20 text-primary' : session.status === 'canceled' ? 'bg-destructive/20 text-destructive' : 'bg-green-500/20 text-green-400'}`}>
                           {session.status}
                         </span>
                       </div>
                     </div>
                     
                     {session.submission_description && (
-                      <div className="bg-surface-base p-4 rounded-lg border border-border-subtle mb-4">
-                        <p className="text-xs uppercase text-muted-foreground font-semibold mb-1">Student Context</p>
-                        <p className="text-sm">{session.submission_description}</p>
+                      <div className="bg-card/50 p-5 rounded-2xl border border-border/60 mb-6">
+                        <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Student Context</p>
+                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{session.submission_description}</p>
                       </div>
                     )}
 
                     <div>
-                      <p className="text-xs uppercase text-muted-foreground font-semibold mb-1">Your Evaluation Notes</p>
-                      <div className="flex gap-2">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Your Evaluation Notes</p>
+                      <div className="flex flex-col gap-3">
                         <textarea 
-                          rows={2} 
+                          rows={4} 
                           placeholder="Provide feedback..."
-                          className="flex-1 bg-surface-base border border-border-subtle rounded-md px-3 py-2 text-sm text-white"
+                          className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-y min-h-[100px]"
                           value={notesDraft[session._id] !== undefined ? notesDraft[session._id] : (session.mentor_notes || '')}
                           onChange={e => setNotesDraft({ ...notesDraft, [session._id]: e.target.value })}
                         ></textarea>
-                        <button onClick={() => handleUpdateNotes(session._id)} className="bg-surface-hover border border-border-subtle px-4 rounded-md text-sm hover:bg-white hover:text-black transition-colors">Save Notes</button>
+                        <div className="flex justify-end">
+                          <button onClick={() => handleUpdateNotes(session._id)} className="bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3 hover:bg-primary/90 transition-colors">Save Notes</button>
+                        </div>
                       </div>
                     </div>
                   </div>
