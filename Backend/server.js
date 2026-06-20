@@ -5,6 +5,8 @@ import { connectDB } from './src/config/db.js';
 import authRoutes from './src/routes/authRoutes.js';
 import adminRoutes from './src/routes/adminRoutes.js';
 import stackRoutes from './src/routes/stackRoutes.js';
+import mentorRoutes from './src/routes/mentorRoutes.js';
+import studentRoutes from './src/routes/studentRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -26,6 +28,8 @@ app.get('/api/health', (req, res) => res.status(200).json({ status: 'OK' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/stacks', stackRoutes);
+app.use('/api/mentor', mentorRoutes);
+app.use('/api/student', studentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
