@@ -351,6 +351,56 @@ const MentorDashboard = () => {
                       <input type="time" value={newEnd} onChange={e => setNewEnd(e.target.value)} required className="w-full bg-card border border-border/60 rounded-2xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all [color-scheme:dark]" />
                     </div>
                   </div>
+                  {/* Slot-count hint */}
+                  {(() => {
+                    if (!newStart || !newEnd) return null;
+                    const [sH, sM] = newStart.split(':').map(Number);
+                    const [eH, eM] = newEnd.split(':').map(Number);
+                    const startMins = sH * 60 + sM;
+                    const endMins   = eH * 60 + eM;
+                    const diff = endMins - startMins;
+                    if (diff <= 0) return null;
+
+                    const fullSlots  = Math.floor(diff / 45);
+                    const remainder  = diff % 45;
+                    const isAligned  = remainder === 0;
+
+                    // Nearest valid end times (down and up)
+                    const snapDown = startMins + fullSlots * 45;
+                    const snapUp   = startMins + (fullSlots + 1) * 45;
+                    const toHHMM = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+
+                    if (fullSlots === 0) {
+                      return (
+                        <p className="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-xl px-4 py-2.5 -mt-2">
+                          ⚠ Window is less than 45 min — no bookable slots. Try ending at <strong>{toHHMM(snapUp)}</strong> for 1 slot.
+                        </p>
+                      );
+                    }
+
+                    if (isAligned) {
+                      return (
+                        <p className="text-xs text-green-400 bg-green-400/10 border border-green-400/20 rounded-xl px-4 py-2.5 -mt-2">
+                          ✓ Perfect — fits exactly <strong>{fullSlots} × 45-min slot{fullSlots > 1 ? 's' : ''}</strong>.
+                        </p>
+                      );
+                    }
+
+                    return (
+                      <p className="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-xl px-4 py-2.5 -mt-2">
+                        ⚠ Fits <strong>{fullSlots} slot{fullSlots > 1 ? 's' : ''}</strong> + {remainder} leftover min. Snap to&nbsp;
+                        <button type="button" onClick={() => setNewEnd(toHHMM(snapDown))} className="underline underline-offset-2 hover:text-amber-300 transition-colors font-semibold">
+                          {toHHMM(snapDown)}
+                        </button>
+                        {' '}or&nbsp;
+                        <button type="button" onClick={() => setNewEnd(toHHMM(snapUp))} className="underline underline-offset-2 hover:text-amber-300 transition-colors font-semibold">
+                          {toHHMM(snapUp)}
+                        </button>
+                        .
+                      </p>
+                    );
+                  })()}
+
                   <div className="flex gap-3">
                     <button type="submit" className="bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3 hover:bg-primary/90 transition-colors flex-1">
                       {editingSlotId ? 'Update Time Slot' : 'Add Time Slot'}
