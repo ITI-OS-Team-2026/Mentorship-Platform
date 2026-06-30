@@ -1,0 +1,111 @@
+// ============================================================
+//  Mentorship Platform — MongoDB Document Diagram (MDD)
+//  Generated: 2026-06-30
+//  Database:  MongoDB (Mongoose ODM)
+// ============================================================
+
+
+// ── Collection: users ───────────────────────────────────────
+collection User {
+  _id          : ObjectId       [pk]
+  name         : String         [trim]
+  email        : String         [required, unique]
+  password_hash: String         [required]
+  role         : String         [required, enum: Admin | Mentor | Student]
+  status       : String         [default: "approved", enum: pending | approved | blocked]
+  created_at   : Date           [auto]   // timestamps: createdAt alias
+
+  // Hooks
+  // pre("save") → bcrypt hash of password_hash (rounds: 10)
+
+  // Methods
+  // matchPassword(enteredPassword) → Boolean
+}
+
+
+// ── Collection: stacks ──────────────────────────────────────
+collection Stack {
+  _id        : ObjectId  [pk]
+  name       : String    [required, unique, trim]
+  description: String    [default: "", trim]
+  createdAt  : Date      [auto]
+  updatedAt  : Date      [auto]
+}
+
+
+// ── Collection: mentorprofiles ──────────────────────────────
+collection MentorProfile {
+  _id           : ObjectId  [pk]
+  user_id       : ObjectId  [required, unique, ref: User]
+  stack_id      : ObjectId  [required, ref: Stack]
+  name          : String    [required, trim]
+  title         : String    [required, trim]
+  bio           : String    [default: ""]
+  is_verified   : Boolean   [default: false]
+  average_rating: Number    [default: 0, min: 0, max: 5]
+  hourly_rate   : Number    [default: 0, min: 0]
+  createdAt     : Date      [auto]
+  updatedAt     : Date      [auto]
+}
+
+
+// ── Collection: mentoravailabilities ────────────────────────
+collection MentorAvailability {
+  _id        : ObjectId  [pk]
+  mentor_id  : ObjectId  [required, ref: MentorProfile]
+  day_of_week: String    [required, enum: Sunday | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday]
+  start_time : String    [required, format: HH:MM]
+  end_time   : String    [required, format: HH:MM]
+  createdAt  : Date      [auto]
+  updatedAt  : Date      [auto]
+}
+
+
+// ── Collection: sessions ─────────────────────────────────────
+collection Session {
+  _id                   : ObjectId  [pk]
+  mentor_id             : ObjectId  [required, ref: MentorProfile]
+  student_id            : ObjectId  [required, ref: User]
+  scheduled_date        : Date      [required]
+  start_time            : String    [required, format: HH:MM]
+  end_time              : String    [required, format: HH:MM]
+  status                : String    [default: "scheduled", enum: scheduled | completed | canceled]
+  submission_description: String    [default: ""]
+  mentor_notes          : String    [default: ""]
+  meeting_link          : String    [default: "", trim]
+  createdAt             : Date      [auto]
+  updatedAt             : Date      [auto]
+
+  // Indexes
+  index [mentor_id, status, scheduled_date]          // compound
+  index [student_id, status, scheduled_date]          // compound
+  index [status]                                      // single
+}
+
+
+// ── Collection: reviews ──────────────────────────────────────
+collection Review {
+  _id       : ObjectId  [pk]
+  mentor_id : ObjectId  [required, ref: MentorProfile]
+  student_id: ObjectId  [required, ref: User]
+  rating    : Number    [required, min: 1, max: 5, integer]
+  comment   : String    [required, trim, maxlength: 1000]
+  createdAt : Date      [auto]
+  updatedAt : Date      [auto]
+
+  // Indexes
+  index [mentor_id, student_id]  [unique]             // one review per student per mentor
+  index [mentor_id, createdAt]   [desc createdAt]     // latest reviews per mentor
+}
+
+
+// ── Relationships ────────────────────────────────────────────
+//
+//  User            1 ──────── 1   MentorProfile         (user_id)
+//  Stack           1 ──────── *   MentorProfile         (stack_id)
+//  MentorProfile   1 ──────── *   MentorAvailability    (mentor_id)
+//  MentorProfile   1 ──────── *   Session               (mentor_id)
+//  User            1 ──────── *   Session               (student_id)
+//  MentorProfile   1 ──────── *   Review                (mentor_id)
+//  User            1 ──────── *   Review                (student_id)
+//
