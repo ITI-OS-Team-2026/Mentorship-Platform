@@ -2,12 +2,17 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource/cairo";
 
 @custom-variant dark (&:is(.dark *));
+/* RTL variant: any element inside a [dir="rtl"] ancestor (incl. the root itself) */
+@custom-variant rtl (&:where([dir="rtl"], [dir="rtl"] *));
 
 @theme {
   /* --- Typography --- */
   --font-sans: "Inter", "SF Pro Display", ui-sans-serif, system-ui, sans-serif;
+  /* Arabic font applied to RTL documents via the [dir="rtl"] base rule below */
+  --font-arabic: "Cairo", "Tajawal", ui-sans-serif, system-ui, sans-serif;
 
   /* Custom text styles mapping to the design system */
   /* Hero (H1) */
@@ -245,6 +250,15 @@
   }
   html {
     @apply font-sans;
+  }
+  /* RTL: switch writing direction + use the Arabic font stack */
+  [dir="rtl"] {
+    direction: rtl;
+    font-family: var(--font-arabic);
+  }
+  /* Scale down Arabic slightly — Cairo renders a touch larger than Geist */
+  [dir="rtl"] body {
+    letter-spacing: 0;
   }
 }
 

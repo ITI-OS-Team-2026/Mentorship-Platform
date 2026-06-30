@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
 
 const getDashboardUrl = (role) => {
@@ -12,6 +13,7 @@ const getDashboardUrl = (role) => {
 
 export function MinimalistFooter() {
   const { user, isAuthenticated } = useAuthStore()
+  const { t } = useTranslation()
 
   return (
     <footer className="border-t border-border bg-background">
@@ -26,7 +28,7 @@ export function MinimalistFooter() {
 
         {/* Copyright */}
         <p className="text-sm text-muted-foreground text-center">
-          © {new Date().getFullYear()} MentHub. All rights reserved.
+          {t('footer.copyright', { year: new Date().getFullYear() })}
         </p>
 
         {/* Links */}
@@ -35,7 +37,7 @@ export function MinimalistFooter() {
             to="/mentors"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Mentors
+            {t('footer.mentors')}
           </Link>
           
           {isAuthenticated ? (
@@ -43,14 +45,14 @@ export function MinimalistFooter() {
               to={getDashboardUrl(user?.role)}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Dashboard
+              {t('footer.dashboard')}
             </Link>
           ) : (
             <Link
               to="/login"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Login
+              {t('footer.login')}
             </Link>
           )}
         </nav>

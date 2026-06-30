@@ -4,7 +4,7 @@ import * as RadixAvatar from '@radix-ui/react-avatar'
 const getInitials = (name) => {
   if (!name) return 'M'
   return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-}
+} 
 
 export default function Avatar({ src, name, size = 24, className = '' }) {
   const sizeClass = `w-${size} h-${size}`

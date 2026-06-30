@@ -1,0 +1,440 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "loadingWorkspace": "Loading workspace...",
+    "loadingProfile": "Loading profile...",
+    "optimizedIndex": "Loading optimized index...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "✕",
+    "notFound": "Not found",
+    "noResults": "No results found.",
+    "networkError": "Network error",
+    "updateFailed": "Update failed",
+    "error": "Error"
+  },
+  "nav": {
+    "findMentors": "Find Mentors",
+    "becomeMentor": "Become a Mentor",
+    "pricing": "Pricing",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "adminConsole": "Admin Console",
+    "logout": "Logout",
+    "mySessions": "My Sessions",
+    "myWorkspace": "My Workspace",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "goToDashboard": "Go to dashboard"
+  },
+  "footer": {
+    "mentors": "Mentors",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "copyright": "© {{year}} MentHub. All rights reserved."
+  },
+  "landing": {
+    "hero": {
+      "line1": "Accelerate Your Career",
+      "line2": "With Expert",
+      "highlight": "Mentorship."
+    },
+    "testimonial": {
+      "stars": "5 star rating",
+      "quote": "\"My mentor helped me land a senior engineering role in 3 months. The structured roadmap and weekly check-ins made all the difference.\"",
+      "author": "Sara K. — Frontend Engineer"
+    },
+    "heroDescription": "Connect with industry professionals who've navigated the exact challenges you're facing. Our mentors have helped <1>10,000+ learners</1> reach their next milestone.",
+    "heroCta": "Find a Mentor",
+    "heroCtaOutline": "Get Started Free",
+    "metrics": {
+      "label": "Platform statistics",
+      "copy1": "Mentorship is undergoing its biggest shift in a generation. Learners who work with the right guide are already landing roles faster — and with far greater confidence.",
+      "copy2": "MentHub is built on that belief. Our platform connects you with verified experts so you can focus on what actually moves your career forward.",
+      "metric1Value": "500+",
+      "metric1Desc": "verified expert mentors across every major tech domain",
+      "metric2Value": "10k+",
+      "metric2Desc": "sessions completed — with a 95 % goal-achievement rate",
+      "metric3Value": "4.9★",
+      "metric3Desc": "average mentor rating from thousands of learner reviews"
+    },
+    "bento": {
+      "overline": "Domain Expertise",
+      "title": "Master Your Stack",
+      "frontend": {
+        "title": "Frontend Engineering",
+        "desc": "React, Vue, TypeScript, CSS architecture, Web Performance & Accessibility."
+      },
+      "backend": {
+        "title": "Backend Engineering",
+        "desc": "Node.js, Python, REST & GraphQL APIs, databases & system design."
+      },
+      "ai": {
+        "title": "AI & Machine Learning",
+        "desc": "PyTorch, LLMs, MLOps pipelines, and applied research."
+      },
+      "cloud": {
+        "title": "Cloud & Infrastructure",
+        "desc": "AWS, GCP, Kubernetes, DevOps, CI/CD and Infrastructure-as-Code."
+      },
+      "mobile": {
+        "title": "Mobile Development",
+        "desc": "React Native, Swift, Kotlin, and Flutter for cross-platform apps."
+      },
+      "explore": "Explore {{domain}} mentors"
+    },
+    "process": {
+      "overline": "Simple Process",
+      "title": "How It Works",
+      "step1Title": "Browse Mentors",
+      "step1Desc": "Explore our curated roster of verified industry professionals across every major tech domain.",
+      "step2Title": "Book a Session",
+      "step2Desc": "Schedule a 1-on-1 session at a time that works for you — sessions are flexible and goal-driven.",
+      "step3Title": "Grow Together",
+      "step3Desc": "Receive personalized guidance, code reviews, career advice, and a clear roadmap to your next milestone."
+    },
+    "cta": {
+      "heading1": "Accelerate your career with",
+      "heading2": "the right mentor",
+      "subtitle": "Ready to reach your next level? Book a session with a verified industry expert today.",
+      "talkTitle": "We'd love to talk to you about",
+      "checklist1": "Personalised 1-on-1 mentorship",
+      "checklist2": "Expert guidance across 50+ domains",
+      "checklist3": "Loved by 10,000+ learners",
+      "checklist4": "How we help you reach your goals",
+      "ctaButton": "Get Started Free",
+      "mentorsReady": "500+ mentors<br />ready to help"
+    }
+  },
+  "auth": {
+    "login": {
+      "badge": "Welcome Back",
+      "heading": "Sign in",
+      "description": "Access your MentHub workspace and continue your mentorship journey."
+    },
+    "register": {
+      "badge": "Join MentHub",
+      "heading": "Create your account",
+      "description": "Start your mentorship journey by creating a free MentHub account."
+    },
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "working": "Working",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@domain.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "roleLabel": "Role",
+    "chooseRole": "Choose a role",
+    "student": "Student",
+    "mentor": "Mentor",
+    "loginSubmit": "Access your mentorship workspace.",
+    "registerSubmit": "Create a new mentorship identity.",
+    "errors": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordShort": "Use at least 8 characters.",
+      "roleRequired": "Choose a role to continue.",
+      "authFailed": "Authentication failed."
+    }
+  },
+  "mentorSearch": {
+    "title": "Discovery Engine",
+    "subtitle": "Browse technical mentors and reserve your session.",
+    "searchPlaceholder": "Search by name or title...",
+    "sortTopRated": "Top Rated",
+    "sortPriceLow": "Price: Low to High",
+    "sortPriceHigh": "Price: High to Low",
+    "noMentors": "No mentors found matching your criteria.",
+    "noBio": "No bio provided.",
+    "perHour": "/hr",
+    "viewProfile": "View Profile",
+    "failedFetch": "Failed to fetch mentors"
+  },
+  "mentorProfile": {
+    "about": "About",
+    "noBio": "No professional bio has been provided yet.",
+    "reviews": "Reviews",
+    "review": "review",
+    "reviews_plural": "reviews",
+    "writeReview": "Write Review",
+    "ratingLabel": "Rating",
+    "reviewLabel": "Review",
+    "reviewPlaceholder": "Share what stood out from your session",
+    "submitting": "Submitting...",
+    "submitReview": "Submit Review",
+    "noReviewsYet": "No reviews yet.",
+    "availabilityOverview": "Availability Overview",
+    "reserveSlot": "Reserve Slot",
+    "bookSubtitle": "Book a 45-minute 1-on-1 session",
+    "noAvailability": "This mentor has not published any available time slots.",
+    "bookingUnavailable": "Booking Unavailable",
+    "selectDate": "Select Date",
+    "chooseDate": "Choose a date",
+    "availableSlots": "Available Slots",
+    "noSlotsForDate": "No remaining slots for this date",
+    "sessionNote": "Sessions are strictly isolated 45-minute code evaluations.",
+    "submissionContext": "Submission Context",
+    "submissionPlaceholder": "What do you want to review? (e.g. async race condition in Node)",
+    "secureSession": "Secure 45-min Session",
+    "toasts": {
+      "mentorNotFound": "Mentor not found",
+      "failedLoad": "Failed to load mentor details",
+      "mustLogin": "You must be logged in to book a session",
+      "onlyStudents": "Only students can book sessions.",
+      "selectDateTime": "Please select date and time",
+      "bookedSuccess": "Session booked successfully!",
+      "bookFailed": "Failed to book session",
+      "bookingNetworkError": "Network error during booking",
+      "reviewNotAvailable": "Review is not available for this mentor yet.",
+      "chooseRating": "Choose a rating from 1 to 5.",
+      "addReview": "Please add a short review.",
+      "reviewSubmitted": "Review submitted.",
+      "reviewFailed": "Failed to submit review",
+      "reviewNetworkError": "Network error while submitting review",
+      "selectedDay": "Selected upcoming {{day}}"
+    }
+  },
+  "mentorDashboard": {
+    "title": "Mentor Workspace",
+    "subtitle": "Manage your profile, availability, and sessions",
+    "tabs": {
+      "profile": "Profile",
+      "availability": "Availability",
+      "sessions": "Sessions",
+      "history": "History"
+    },
+    "profile": {
+      "welcomeTitle": "Welcome to MentHub!",
+      "welcomeDesc": "Please initialize your profile to start accepting sessions.",
+      "settings": "Profile Settings",
+      "fullName": "Full Name",
+      "title": "Title",
+      "techStack": "Technology Stack",
+      "selectStack": "Select your primary stack...",
+      "hourlyRate": "Hourly Rate ($)",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell students about your experience and expertise...",
+      "updateProfile": "Update Profile",
+      "initializeProfile": "Initialize Profile",
+      "previewTitle": "Profile Preview",
+      "yourName": "Your Name",
+      "yourTitle": "Your Title",
+      "hourlyRatePreview": "Hourly Rate",
+      "techStackPreview": "Technology Stack",
+      "notSelected": "Not selected"
+    },
+    "availability": {
+      "editSlot": "Edit Slot",
+      "addSlot": "Add New Slot",
+      "dayOfWeek": "Day of Week",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "updateSlot": "Update Time Slot",
+      "addTimeSlot": "Add Time Slot",
+      "current": "Current Availability",
+      "noSlots": "No slots configured yet.",
+      "addFirstSlot": "Add your first availability slot above.",
+      "slotHint": {
+        "lessThan45": "⚠ Window is less than 45 min — no bookable slots. Try ending at <strong>{{time}}</strong> for 1 slot.",
+        "perfect": "✓ Perfect — fits exactly <strong>{{count}} × 45-min slot{{plural}}</strong>.",
+        "partial": "⚠ Fits <strong>{{count}} slot{{plural}}</strong> + {{remainder}} leftover min. Snap to"
+      }
+    },
+    "sessions": {
+      "noSessions": "No incoming sessions.",
+      "noSessionsHint": "Students will appear here when they book sessions with you.",
+      "sessionWith": "Session with {{name}}",
+      "studentContext": "Student Context",
+      "meetingLink": "Meeting Link",
+      "linkPlaceholder": "https://meet.google.com/... or https://zoom.us/...",
+      "saveLink": "Save Link",
+      "yourNotes": "Your Evaluation Notes",
+      "notesPlaceholder": "Provide feedback...",
+      "saveNotes": "Save Notes",
+      "copy": "Copy",
+      "copyLink": "Copy link",
+      "linkCopied": "Link copied!",
+      "complete": "Complete",
+      "cancel": "Cancel"
+    },
+    "history": {
+      "empty": "No completed or canceled sessions found.",
+      "emptyHint": "Your session history will appear here."
+    },
+    "toasts": {
+      "failedLoad": "Failed to load mentor workspace",
+      "profileUpdated": "Profile updated",
+      "profileCreated": "Profile created successfully!",
+      "selectStack": "Please select a Stack",
+      "slotAdded": "Slot added",
+      "slotUpdated": "Slot updated",
+      "slotDeleted": "Slot deleted",
+      "slotDeleteFailed": "Failed to delete slot",
+      "slotAddFailed": "Failed to add slot",
+      "slotUpdateFailed": "Failed to update slot",
+      "sessionStatus": "Session {{status}}",
+      "notesSaved": "Notes saved",
+      "linkSaved": "Meeting link saved — student can now join!",
+      "linkFailed": "Failed to save link",
+      "enterLink": "Please enter a meeting link"
+    }
+  },
+  "studentDashboard": {
+    "title": "My Tailored Workspace",
+    "unknownMentor": "Unknown Mentor",
+    "context": "Context",
+    "evaluationNotes": "Evaluation Notes",
+    "cancelSession": "Cancel Session",
+    "reschedule": "Reschedule",
+    "writeReview": "Write Review",
+    "rescheduleModal": {
+      "title": "Reschedule Session",
+      "selectDate": "Select Date",
+      "chooseDate": "Choose a date",
+      "availableTimes": "Available Times",
+      "confirmReschedule": "Confirm Reschedule"
+    },
+    "toasts": {
+      "failedLoad": "Failed to load sessions",
+      "canceledSuccess": "Session canceled successfully",
+      "cancelFailed": "Failed to cancel session",
+      "cancelError": "Error canceling session",
+      "rescheduledSuccess": "Session rescheduled",
+      "rescheduleFailed": "Failed to reschedule",
+      "rescheduleNetworkError": "Network error while rescheduling",
+      "selectDateTime": "Select date and time",
+      "failedLoadAvailability": "Failed to load mentor availability"
+    }
+  },
+  "adminDashboard": {
+    "title": "Admin Console",
+    "subtitle": "Manage users, stacks, and platform health",
+    "tabs": {
+      "overview": "Overview",
+      "users": "Users",
+      "stacks": "Stacks",
+      "statistics": "Statistics"
+    },
+    "overview": {
+      "totalUsers": "Total Users",
+      "totalMentors": "Total Mentors",
+      "totalStudents": "Total Students",
+      "totalSessions": "Total Sessions",
+      "techStacks": "Tech Stacks"
+    },
+    "statistics": {
+      "scheduledSessions": "Scheduled Sessions",
+      "completedSessions": "Completed Sessions",
+      "canceledSessions": "Canceled Sessions"
+    },
+    "users": {
+      "title": "Users",
+      "searchPlaceholder": "Search users...",
+      "noUsers": "No users found.",
+      "tableHeaders": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "approve": "Approve",
+      "unblock": "Unblock",
+      "block": "Block",
+      "confirmAction": "Confirm action",
+      "approveConfirm": "Approve {{email}}?",
+      "unblockConfirm": "Unblock {{email}}?",
+      "blockConfirm": "Block {{email}}?"
+    },
+    "stacks": {
+      "title": "Technical Stacks",
+      "editStack": "Edit Stack",
+      "addStack": "Add New Stack",
+      "namePlaceholder": "Stack name",
+      "descriptionPlaceholder": "Description (optional)",
+      "update": "Update",
+      "create": "Create",
+      "noStacks": "No stacks yet. Add your first one above.",
+      "tableHeaders": {
+        "name": "Name",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "deleteConfirm": "Delete the \"{{name}}\" stack? This cannot be undone."
+    },
+    "toasts": {
+      "userUpdated": "User updated",
+      "stackUpdated": "Stack updated",
+      "stackCreated": "Stack created",
+      "stackDeleted": "Stack deleted"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  },
+  "upcomingSession": {
+    "emptyTitle": "You don't have any upcoming sessions yet.",
+    "emptyDesc": "Book your first mentorship session to get personalized guidance from experienced mentors.",
+    "findMentor": "Find a Mentor",
+    "upcomingSession": "Upcoming Session",
+    "mentor": "Mentor",
+    "mentorship": "Mentorship",
+    "date": "Date",
+    "time": "Time",
+    "meeting": "Meeting",
+    "duration": "Duration:",
+    "linkProvided": "Link provided",
+    "notAvailable": "N/A",
+    "context": "Context",
+    "evaluationNotes": "Evaluation Notes",
+    "joinMeeting": "Join Meeting",
+    "cancelSession": "Cancel Session",
+    "reschedule": "Reschedule",
+    "bookedVia": "Booked via",
+    "countdown": {
+      "startingNow": "Starting now",
+      "startsIn": "Starts in {{value}} {{unit}}"
+    },
+    "units": {
+      "day_one": "day",
+      "day_other": "days",
+      "hour_one": "hour",
+      "hour_other": "hours",
+      "minute_one": "minute",
+      "minute_other": "minutes"
+    }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "goToPrevious": "Go to previous page",
+    "goToNext": "Go to next page"
+  },
+  "notFound": {
+    "badge": "Route unavailable",
+    "title": "This page is off limits.",
+    "description": "The link is broken, missing, or your current role cannot access this area.",
+    "backToDashboard": "Back to dashboard",
+    "backHome": "Back home",
+    "goBack": "Go back"
+  },
+  "languageSwitcher": {
+    "en": "EN",
+    "ar": "AR"
+  }
+}

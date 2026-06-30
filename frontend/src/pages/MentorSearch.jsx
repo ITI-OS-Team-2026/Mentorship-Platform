@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { Pagination } from '@/components/ui/pagination';
 
@@ -7,6 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 const PAGE_SIZE = 9;
 
 const MentorSearch = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   useAuthStore();
@@ -50,7 +52,7 @@ const MentorSearch = () => {
       setSearchParams(query, { replace: true });
 
       const response = await fetch(`http://localhost:5005/api/student/mentors?${query.toString()}`);
-      if (!response.ok) throw new Error('Failed to fetch mentors');
+      if (!response.ok) throw new Error(t('mentorSearch.failedFetch'));
 
       const data = await response.json();
       setMentors(data.mentors);
@@ -60,7 +62,7 @@ const MentorSearch = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, stack, sortBy, page, setSearchParams]);
+  }, [debouncedSearch, stack, sortBy, page, setSearchParams, t]);
 
   useEffect(() => {
     fetchMentors(); // eslint-disable-line react-hooks/set-state-in-effect
@@ -68,15 +70,15 @@ const MentorSearch = () => {
 
   return (
     <div className="container mx-auto px-4 pt-32 pb-12 text-primary max-w-7xl">
-      <div className="mb-12 text-center md:text-left">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-tighter drop-shadow-lg text-foreground">Discovery Engine</h1>
-        <p className="text-muted-foreground text-lg">Browse technical mentors and reserve your session.</p>
+      <div className="mb-12 text-center md:text-start">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-tighter drop-shadow-lg text-foreground">{t('mentorSearch.title')}</h1>
+        <p className="text-muted-foreground text-lg">{t('mentorSearch.subtitle')}</p>
       </div>
 
       <div className="glass-panel p-6 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
         <input
           type="text"
-          placeholder="Search by name or title..."
+          placeholder={t('mentorSearch.searchPlaceholder')}
           className="flex-1 bg-surface-base border border-border-subtle rounded-md px-4 py-2 text-primary focus:outline-none focus:border-accent-primary transition-colors"
           value={searchQuery}
           onChange={(e) => {
@@ -93,19 +95,19 @@ const MentorSearch = () => {
             setPage(1);
           }}
         >
-          <option value="rating">Top Rated</option>
-          <option value="price_low">Price: Low to High</option>
-          <option value="price_high">Price: High to Low</option>
+          <option value="rating">{t('mentorSearch.sortTopRated')}</option>
+          <option value="price_low">{t('mentorSearch.sortPriceLow')}</option>
+          <option value="price_high">{t('mentorSearch.sortPriceHigh')}</option>
         </select>
       </div>
 
       {loading ? (
-        <div className="text-center text-secondary py-12 animate-pulse">Loading optimized index...</div>
+        <div className="text-center text-secondary py-12 animate-pulse">{t('common.optimizedIndex')}</div>
       ) : error ? (
         <div className="text-center text-destructive py-12 bg-destructive/10 rounded-lg">{error}</div>
       ) : mentors.length === 0 ? (
         <div className="text-center text-secondary py-12 border border-border-subtle rounded-lg border-dashed">
-          No mentors found matching your criteria.
+          {t('mentorSearch.noMentors')}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,18 +116,18 @@ const MentorSearch = () => {
               <div>
                 <h3 className="text-2xl font-semibold mb-1 tracking-tight text-foreground">{mentor.name}</h3>
                 <p className="text-primary text-sm mb-4 uppercase tracking-wider font-medium">{mentor.title}</p>
-                <p className="text-muted-foreground text-sm line-clamp-3 mb-4 leading-relaxed">{mentor.bio || "No bio provided."}</p>
+                <p className="text-muted-foreground text-sm line-clamp-3 mb-4 leading-relaxed">{mentor.bio || t('mentorSearch.noBio')}</p>
               </div>
               <div className="flex justify-between items-center border-t border-border-subtle pt-4 mt-auto">
                 <div className="flex flex-col">
                   <span className="text-foreground font-bold tracking-wider"><span className="text-primary">★</span> {mentor.average_rating.toFixed(1)}</span>
-                  <span className="text-muted-foreground text-xs">${mentor.hourly_rate}/hr</span>
+                  <span className="text-muted-foreground text-xs">${mentor.hourly_rate}{t('mentorSearch.perHour')}</span>
                 </div>
                 <button
                   onClick={() => navigate(`/mentors/${mentor.user_id}`)}
                   className="btn-primary"
                 >
-                  View Profile
+                  {t('mentorSearch.viewProfile')}
                 </button>
               </div>
             </div>

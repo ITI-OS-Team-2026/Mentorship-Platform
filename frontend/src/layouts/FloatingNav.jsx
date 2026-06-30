@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { LogOut, Menu, X, Sun, Moon } from 'lucide-react'
+import { LogOut, Menu, X, Sun, Moon, Globe } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
+import { useLanguageStore } from '@/store/languageStore'
 import { Button } from '@/components/ui/button'
 import mentHubLogoDark from '@/assets/menthub-logo-dark.png'
 import mentHubLogoLight from '@/assets/menthub-logo-light.png'
@@ -14,18 +16,6 @@ const getDashboardUrl = (role) => {
   if (role === 'Admin') return '/admin'
   return '/'
 }
-
-const getDashboardLabel = (role) => {
-  if (role === 'Student') return 'My Sessions'
-  if (role === 'Mentor') return 'My Workspace'
-  if (role === 'Admin') return 'Admin Console'
-  return 'Dashboard'
-}
-
-const navLinks = [
-  { label: 'Find Mentors', to: '/mentors' },
-  { label: 'Become a Mentor', to: '/login?intent=mentor' },
-]
 
 function MentHubLogoMark() {
   return (
@@ -52,11 +42,22 @@ function MentHubLogoMark() {
 export function FloatingNav() {
   const { isAuthenticated, user, logout } = useAuthStore()
   const { theme, toggleTheme } = useThemeStore()
+  const { lang, toggleLang } = useLanguageStore()
+  const { t } = useTranslation()
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const location = useLocation()
 
   const dashUrl = user ? getDashboardUrl(user.role) : '/'
-  const dashLabel = user ? getDashboardLabel(user.role) : 'Dashboard'
+  const dashLabel = user
+    ? user.role === 'Student'
+      ? t('nav.mySessions')
+      : user.role === 'Mentor'
+        ? t('nav.myWorkspace')
+        : user.role === 'Admin'
+          ? t('nav.adminConsole')
+          : t('nav.dashboard')
+    : t('nav.dashboard')
+
   const initials = user?.name
     ? user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
     : user?.email ? user.email.slice(0, 2).toUpperCase() : 'U'
@@ -73,7 +74,7 @@ export function FloatingNav() {
   }
 
   return (
-    <div className="fixed top-4 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-7xl -translate-x-1/2 sm:w-[calc(100%-2rem)]">
+    <div className="fixed top-4 start-1/2 z-50 w-[calc(100%-1.5rem)] max-w-7xl -translate-x-1/2 sm:w-[calc(100%-2rem)] rtl:translate-x-1/2">
       <nav
         className="grid min-h-16 grid-cols-[1fr_auto] items-center gap-3 rounded-[1.375rem] border border-black/10 bg-white/[0.72] px-3 py-2 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-2xl dark:border-white/10 dark:bg-zinc-950/70 dark:shadow-[0_16px_45px_rgba(0,0,0,0.22)] md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:px-4 lg:px-5"
         aria-label="Main navigation"
@@ -95,17 +96,17 @@ export function FloatingNav() {
             let centerLinks = [];
             if (!isAuthenticated) {
               centerLinks = [
-                { label: 'Find Mentors', to: '/mentors' },
-                { label: 'Become a Mentor', to: '/login?intent=mentor' },
-                { label: 'Pricing', to: '/#cta' }
+                { label: t('nav.findMentors'), to: '/mentors' },
+                { label: t('nav.becomeMentor'), to: '/login?intent=mentor' },
+                { label: t('nav.pricing'), to: '/#cta' }
               ];
             } else if (user?.role === 'Student') {
-              centerLinks = [ { label: 'Find Mentors', to: '/mentors' } ];
+              centerLinks = [ { label: t('nav.findMentors'), to: '/mentors' } ];
             } else if (user?.role === 'Mentor') {
               centerLinks = []; // Mentors don't browse for mentors
             } else if (user?.role === 'Admin') {
               centerLinks = [
-                { label: 'Admin Console', to: '/admin' },
+                { label: t('nav.adminConsole'), to: '/admin' },
               ];
             }
 
@@ -132,11 +133,23 @@ export function FloatingNav() {
         </div>
 
         <div className="flex items-center justify-end gap-1.5 justify-self-end sm:gap-2">
+          {/* Language switcher */}
+          <button
+            onClick={toggleLang}
+            className="inline-flex size-10 items-center justify-center rounded-full border border-black/10 text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 dark:border-white/10 dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white dark:focus-visible:ring-white/20"
+            aria-label="Switch language"
+            title="Switch language"
+          >
+            <Globe className="size-4" />
+            <span className="ms-0.5 text-[10px] font-bold">{lang === 'ar' ? 'AR' : 'EN'}</span>
+          </button>
+
+          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className="inline-flex size-10 items-center justify-center rounded-full border border-black/10 text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 dark:border-white/10 dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white dark:focus-visible:ring-white/20"
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={theme === 'dark' ? t('nav.switchToLight') : t('nav.switchToDark')}
+            title={theme === 'dark' ? t('nav.switchToLight') : t('nav.switchToDark')}
           >
             {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
@@ -153,15 +166,15 @@ export function FloatingNav() {
                 <Link
                   to={dashUrl}
                   className="inline-flex size-10 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-[0_10px_26px_rgba(232,113,48,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.03] hover:bg-primary/95"
-                  aria-label={`Go to dashboard (${user?.role})`}
+                  aria-label={t('nav.goToDashboard')}
                 >
                   {initials}
                 </Link>
                 <button
                   onClick={logout}
                   className="inline-flex size-10 items-center justify-center rounded-full border border-black/10 text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 dark:border-white/10 dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white dark:focus-visible:ring-white/20"
-                  aria-label="Logout"
-                  title="Logout"
+                  aria-label={t('nav.logout')}
+                  title={t('nav.logout')}
                 >
                   <LogOut className="size-4" />
                 </button>
@@ -175,13 +188,13 @@ export function FloatingNav() {
                     location.pathname === '/login' && !location.search && 'bg-black/[0.06] text-foreground dark:bg-white/[0.1] dark:text-white',
                   )}
                 >
-                  Login
+                  {t('nav.login')}
                 </Link>
                 <Button
                   asChild
-                  className="h-11 rounded-full border border-primary/30 bg-primary px-5 text-sm font-medium text-primary-foreground shadow-[0_12px_28px_rgba(232,113,48,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-primary/95 hover:shadow-[0_16px_34px_rgba(232,113,48,0.3)]"
+                  className="h-11 rounded-full border border-primary/30 bg-primary px-5 text-sm font-medium text-primary-foreground shadow-[0_12px_28px_rgba(232,113,48,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-primary/95"
                 >
-                  <Link to="/login">Get Started</Link>
+                  <Link to="/login">{t('nav.getStarted')}</Link>
                 </Button>
               </>
             )}
@@ -190,7 +203,7 @@ export function FloatingNav() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="inline-flex size-10 items-center justify-center rounded-full border border-black/10 text-muted-foreground transition-all duration-300 hover:bg-black/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 dark:border-white/10 dark:text-white/75 dark:hover:bg-white/[0.08] dark:hover:text-white dark:focus-visible:ring-white/20 md:hidden"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileOpen ? t('nav.closeMenu') : t('nav.openMenu')}
             aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="size-4" /> : <Menu className="size-4" />}
@@ -204,17 +217,17 @@ export function FloatingNav() {
             let mobileLinks = [];
             if (!isAuthenticated) {
               mobileLinks = [
-                { label: 'Find Mentors', to: '/mentors' },
-                { label: 'Become a Mentor', to: '/login?intent=mentor' },
-                { label: 'Pricing', to: '/#cta' }
+                { label: t('nav.findMentors'), to: '/mentors' },
+                { label: t('nav.becomeMentor'), to: '/login?intent=mentor' },
+                { label: t('nav.pricing'), to: '/#cta' }
               ];
             } else if (user?.role === 'Student') {
-              mobileLinks = [ { label: 'Find Mentors', to: '/mentors' } ];
+              mobileLinks = [ { label: t('nav.findMentors'), to: '/mentors' } ];
             } else if (user?.role === 'Mentor') {
               mobileLinks = []; // Mentors don't browse for mentors
             } else if (user?.role === 'Admin') {
               mobileLinks = [
-                { label: 'Admin Console', to: '/admin' },
+                { label: t('nav.adminConsole'), to: '/admin' },
               ];
             }
 
@@ -226,7 +239,7 @@ export function FloatingNav() {
                 aria-current={isNavActive(to) ? 'page' : undefined}
                 className={cn(
                   'rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-black/[0.06] hover:text-foreground dark:text-white/75 dark:hover:bg-white/[0.08] dark:hover:text-white',
-                  isNavActive(to) && 'bg-black/[0.06] text-foreground shadow-[inset_3px_0_0_var(--primary)] dark:bg-white/[0.1] dark:text-white',
+                  isNavActive(to) && 'bg-black/[0.06] text-foreground dark:bg-white/[0.1] dark:text-white rtl:shadow-[inset_-3px_0_0_var(--primary)] ltr:shadow-[inset_3px_0_0_var(--primary)]',
                 )}
               >
                 {label}
@@ -256,7 +269,7 @@ export function FloatingNav() {
                 className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-black/[0.06] hover:text-foreground dark:text-white/80 dark:hover:bg-white/[0.08] dark:hover:text-white"
               >
                 <LogOut className="size-4" />
-                Logout
+                {t('nav.logout')}
               </button>
             </>
           ) : (
@@ -266,13 +279,13 @@ export function FloatingNav() {
                 onClick={() => setMobileOpen(false)}
                 className="rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-black/[0.06] hover:text-foreground dark:text-white/80 dark:hover:bg-white/[0.08] dark:hover:text-white"
               >
-                Login
+                {t('nav.login')}
               </Link>
               <Button
                 asChild
                 className="mt-1 h-11 rounded-2xl border border-primary/30 bg-primary text-sm font-medium text-primary-foreground shadow-[0_12px_28px_rgba(232,113,48,0.24)] transition-all duration-300 hover:bg-primary/95"
               >
-                <Link to="/login">Get Started</Link>
+                <Link to="/login">{t('nav.getStarted')}</Link>
               </Button>
             </>
           )}
