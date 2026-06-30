@@ -9,6 +9,8 @@ import {
   ArrowRight,
   ArrowUpRight,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
@@ -234,7 +236,7 @@ function MobileVisual() {
   )
 }
 
-function BentoCard({ icon, title, desc, className, glowClass, visual, href = '/mentors', featured = false }) {
+function BentoCard({ icon, title, desc, className, glowClass, visual, href = '/mentors', featured = false, t }) {
   return (
     <Link
       to={href}
@@ -242,7 +244,7 @@ function BentoCard({ icon, title, desc, className, glowClass, visual, href = '/m
         'group relative flex min-h-[13rem] cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-border/60 bg-card/65 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:bg-card/80 hover:shadow-[0_24px_60px_rgba(15,23,42,0.14),0_0_45px_rgba(232,113,48,0.10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35 dark:hover:shadow-[0_24px_70px_rgba(0,0,0,0.38),0_0_48px_rgba(232,113,48,0.16)]',
         className,
       )}
-      aria-label={`Explore ${title} mentors`}
+      aria-label={t('landing.bento.explore', { domain: title })}
     >
       {/* Gradient accent overlay */}
       <div
@@ -303,6 +305,7 @@ function ProcessStep({ step, title, desc, isLast }) {
    LandingPage
 ───────────────────────────────────────────── */
 export default function LandingPage() {
+  const { t } = useTranslation()
   return (
     <div className="bg-background text-foreground overflow-hidden">
       {/* ────────────────────────────────────────
@@ -322,9 +325,9 @@ export default function LandingPage() {
 
           {/* ── Massive full-width headline ── */}
           <h1 className="mb-14 text-[clamp(3.5rem,10vw,6.5rem)] font-extrabold leading-[0.95] tracking-tight text-foreground">
-            Accelerate Your Career<br />
-            With Expert{' '}
-            <span className="text-primary">Mentorship.</span>
+            {t('landing.hero.line1')}<br />
+            {t('landing.hero.line2')}{' '}
+            <span className="text-primary">{t('landing.hero.highlight')}</span>
           </h1>
 
           {/* ── Bottom two-column row ── */}
@@ -334,7 +337,7 @@ export default function LandingPage() {
             <div className="flex flex-col justify-between gap-8">
               {/* Stars */}
               <div>
-                <div className="mb-4 flex gap-1" aria-label="5 star rating">
+                <div className="mb-4 flex gap-1" aria-label={t('landing.testimonial.stars')}>
                   {Array.from({ length: 5 }).map((_, i) => (
                     <svg key={i} className="size-5 text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -343,12 +346,11 @@ export default function LandingPage() {
                 </div>
 
                 <blockquote className="max-w-[22ch] text-sm leading-relaxed text-muted-foreground">
-                  "My mentor helped me land a senior engineering role in 3 months.
-                  The structured roadmap and weekly check-ins made all the difference."
+                  {t('landing.testimonial.quote')}
                 </blockquote>
 
                 <p className="mt-3 text-xs font-medium text-foreground">
-                  Sara K. — Frontend Engineer
+                  {t('landing.testimonial.author')}
                 </p>
               </div>
 
@@ -363,10 +365,10 @@ export default function LandingPage() {
             {/* Right — description + paired CTA buttons */}
             <div className="flex flex-col justify-between gap-8">
               <p className="text-base leading-relaxed text-muted-foreground max-w-sm">
-                Connect with industry professionals who've navigated the exact
-                challenges you're facing. Our mentors have helped{' '}
-                <span className="font-medium text-foreground">10,000+ learners</span>{' '}
-                reach their next milestone.
+                <Trans
+                  i18nKey="landing.heroDescription"
+                  components={[<span key="1" className="font-medium text-foreground" />]}
+                />
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
@@ -375,7 +377,7 @@ export default function LandingPage() {
                   size="lg"
                   className="w-full justify-center border border-primary/30 px-7 shadow-[0_16px_36px_rgba(232,113,48,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_rgba(232,113,48,0.34)] sm:w-auto sm:min-w-44"
                 >
-                  <Link to="/mentors">Find a Mentor</Link>
+                  <Link to="/mentors">{t('landing.heroCta')}</Link>
                 </Button>
                 <Button
                   asChild
@@ -383,7 +385,7 @@ export default function LandingPage() {
                   variant="outline"
                   className="w-full justify-center border-border/70 bg-background/40 px-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-primary/10 hover:text-foreground hover:shadow-[0_18px_42px_rgba(232,113,48,0.14)] sm:w-auto sm:min-w-44"
                 >
-                  <Link to="/login">Get Started Free</Link>
+                  <Link to="/login">{t('landing.heroCtaOutline')}</Link>
                 </Button>
               </div>
             </div>
@@ -399,7 +401,7 @@ export default function LandingPage() {
       <section
         id="metrics"
         className="border-y border-border py-20"
-        aria-label="Platform statistics"
+        aria-label={t('landing.metrics.label')}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-16">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
@@ -407,23 +409,19 @@ export default function LandingPage() {
             {/* Left — narrative copy */}
             <div className="flex flex-col justify-center gap-5 text-sm leading-relaxed text-muted-foreground max-w-sm">
               <p>
-                Mentorship is undergoing its biggest shift in a generation.
-                Learners who work with the right guide are already landing roles
-                faster — and with far greater confidence.
+                {t('landing.metrics.copy1')}
               </p>
               <p>
-                MentHub is built on that belief. Our platform connects you with
-                verified experts so you can focus on what actually moves your
-                career forward.
+                {t('landing.metrics.copy2')}
               </p>
             </div>
 
             {/* Right — stacked metric rows */}
             <div className="flex flex-col">
               {[
-                { value: '500+', desc: 'verified expert mentors across every major tech domain' },
-                { value: '10k+', desc: 'sessions completed — with a 95 % goal-achievement rate' },
-                { value: '4.9★', desc: 'average mentor rating from thousands of learner reviews' },
+                { value: t('landing.metrics.metric1Value'), desc: t('landing.metrics.metric1Desc') },
+                { value: t('landing.metrics.metric2Value'), desc: t('landing.metrics.metric2Desc') },
+                { value: t('landing.metrics.metric3Value'), desc: t('landing.metrics.metric3Desc') },
               ].map(({ value, desc }) => (
                 <div
                   key={value}
@@ -434,7 +432,7 @@ export default function LandingPage() {
                     {value}
                   </span>
                   {/* Right-aligned descriptor */}
-                  <span className="max-w-[14rem] text-right text-xs leading-relaxed text-muted-foreground">
+                  <span className="max-w-[14rem] text-end text-xs leading-relaxed text-muted-foreground">
                     {desc}
                   </span>
                 </div>
@@ -457,10 +455,10 @@ export default function LandingPage() {
           {/* Section header */}
           <div className="mb-16">
             <p className="mb-4 text-xs uppercase tracking-[0.45em] text-muted-foreground">
-              Domain Expertise
+              {t('landing.bento.overline')}
             </p>
             <h2 className="text-4xl font-bold uppercase tracking-tight text-foreground lg:text-5xl">
-              Master Your Stack
+              {t('landing.bento.title')}
             </h2>
           </div>
 
@@ -470,52 +468,57 @@ export default function LandingPage() {
             <BentoCard
               className="lg:col-span-2 lg:row-span-2"
               icon={<Monitor className="size-5" />}
-              title="Frontend Engineering"
-              desc="React, Vue, TypeScript, CSS architecture, Web Performance & Accessibility."
+              title={t('landing.bento.frontend.title')}
+              desc={t('landing.bento.frontend.desc')}
               glowClass="from-primary/18 via-cyan-400/10 to-transparent"
               href={expertiseLinks.frontend}
               visual={<FrontendVisual />}
               featured
+              t={t}
             />
 
             {/* Backend */}
             <BentoCard
               icon={<Server className="size-5" />}
-              title="Backend Engineering"
-              desc="Node.js, Python, REST & GraphQL APIs, databases & system design."
+              title={t('landing.bento.backend.title')}
+              desc={t('landing.bento.backend.desc')}
               glowClass="from-violet-500/16 via-primary/8 to-transparent"
               href={expertiseLinks.backend}
               visual={<BackendVisual />}
+              t={t}
             />
 
             {/* AI / ML */}
             <BentoCard
               icon={<Cpu className="size-5" />}
-              title="AI & Machine Learning"
-              desc="PyTorch, LLMs, MLOps pipelines, and applied research."
+              title={t('landing.bento.ai.title')}
+              desc={t('landing.bento.ai.desc')}
               glowClass="from-emerald-500/16 via-cyan-300/8 to-transparent"
               href={expertiseLinks.ai}
               visual={<AiVisual />}
+              t={t}
             />
 
             {/* Infrastructure */}
             <BentoCard
               icon={<Cloud className="size-5" />}
-              title="Cloud & Infrastructure"
-              desc="AWS, GCP, Kubernetes, DevOps, CI/CD and Infrastructure-as-Code."
+              title={t('landing.bento.cloud.title')}
+              desc={t('landing.bento.cloud.desc')}
               glowClass="from-orange-400/18 via-primary/8 to-transparent"
               href={expertiseLinks.cloud}
               visual={<CloudVisual />}
+              t={t}
             />
 
             {/* Mobile */}
             <BentoCard
               icon={<Smartphone className="size-5" />}
-              title="Mobile Development"
-              desc="React Native, Swift, Kotlin, and Flutter for cross-platform apps."
+              title={t('landing.bento.mobile.title')}
+              desc={t('landing.bento.mobile.desc')}
               glowClass="from-rose-500/16 via-primary/8 to-transparent"
               href={expertiseLinks.mobile}
               visual={<MobileVisual />}
+              t={t}
             />
           </div>
         </div>
@@ -532,10 +535,10 @@ export default function LandingPage() {
           {/* Section header */}
           <div className="mb-20 text-center">
             <p className="mb-4 text-xs uppercase tracking-[0.45em] text-muted-foreground">
-              Simple Process
+              {t('landing.process.overline')}
             </p>
             <h2 className="text-4xl font-bold uppercase tracking-tight text-foreground lg:text-5xl">
-              How It Works
+              {t('landing.process.title')}
             </h2>
           </div>
 
@@ -543,18 +546,18 @@ export default function LandingPage() {
           <div className="grid gap-12 md:grid-cols-3 md:gap-8">
             <ProcessStep
               step="01"
-              title="Browse Mentors"
-              desc="Explore our curated roster of verified industry professionals across every major tech domain."
+              title={t('landing.process.step1Title')}
+              desc={t('landing.process.step1Desc')}
             />
             <ProcessStep
               step="02"
-              title="Book a Session"
-              desc="Schedule a 1-on-1 session at a time that works for you — sessions are flexible and goal-driven."
+              title={t('landing.process.step2Title')}
+              desc={t('landing.process.step2Desc')}
             />
             <ProcessStep
               step="03"
-              title="Grow Together"
-              desc="Receive personalized guidance, code reviews, career advice, and a clear roadmap to your next milestone."
+              title={t('landing.process.step3Title')}
+              desc={t('landing.process.step3Desc')}
               isLast
             />
           </div>
@@ -591,20 +594,19 @@ export default function LandingPage() {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="-ml-3 -mt-6 size-8 text-primary"
+                className="-ml-3 -mt-6 size-8 text-primary rtl:mr-3"
               >
                 <path d="M13 2L4.09 12.97A1 1 0 005 14.5h5.5L10 22l9.5-10.5A1 1 0 0018.5 10H13l.5-8z" />
               </svg>
             </div>
 
             <h2 className="mx-auto max-w-2xl text-4xl font-bold leading-tight tracking-tight text-foreground lg:text-5xl">
-              Accelerate your career with<br />
-              <span className="text-primary">the right mentor</span>
+              {t('landing.cta.heading1')}<br />
+              <span className="text-primary">{t('landing.cta.heading2')}</span>
             </h2>
 
             <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
-              Ready to reach your next level? Book a session with a verified
-              industry expert today.
+              {t('landing.cta.subtitle')}
             </p>
           </div>
 
@@ -619,7 +621,7 @@ export default function LandingPage() {
                   <div className="size-2.5 rounded-full bg-destructive/60" />
                   <div className="size-2.5 rounded-full bg-primary/40" />
                   <div className="size-2.5 rounded-full bg-chart-2/60" />
-                  <div className="ml-3 flex-1 rounded-full bg-muted/60 py-0.5 px-3 text-[10px] text-muted-foreground">
+                  <div className="ms-3 flex-1 rounded-full bg-muted/60 py-0.5 px-3 text-[10px] text-muted-foreground">
                     menthub.io/dashboard
                   </div>
                 </div>
@@ -644,22 +646,22 @@ export default function LandingPage() {
                   ))}
                 </div>
               </div>
-              {/* Gradient fade on right edge */}
-              <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-card/60 to-transparent" />
+              {/* Gradient fade on edge */}
+              <div className="pointer-events-none absolute inset-y-0 end-0 w-12 bg-gradient-to-l from-card/60 to-transparent rtl:bg-gradient-to-r" />
             </div>
 
             {/* Right — checklist + CTA */}
             <div className="flex flex-col justify-between gap-8 bg-card/80 p-8 md:w-72 lg:w-80 shrink-0">
               <div>
                 <p className="mb-5 text-sm font-semibold text-foreground">
-                  We'd love to talk to you about
+                  {t('landing.cta.talkTitle')}
                 </p>
                 <ul className="space-y-3">
                   {[
-                    'Personalised 1-on-1 mentorship',
-                    'Expert guidance across 50+ domains',
-                    'Loved by 10,000+ learners',
-                    'How we help you reach your goals',
+                    t('landing.cta.checklist1'),
+                    t('landing.cta.checklist2'),
+                    t('landing.cta.checklist3'),
+                    t('landing.cta.checklist4'),
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-muted-foreground">
                       <svg
@@ -681,8 +683,8 @@ export default function LandingPage() {
               <div className="space-y-4">
                 <Button asChild size="lg" className="w-full gap-2">
                   <Link to="/login">
-                    Get Started Free
-                    <ArrowRight className="size-4" />
+                    {t('landing.cta.ctaButton')}
+                    <ArrowRight className="size-4 rtl:rotate-180" />
                   </Link>
                 </Button>
 
@@ -699,9 +701,7 @@ export default function LandingPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground leading-tight">
-                    500+ mentors<br />ready to help
-                  </p>
+                  <p className="text-xs text-muted-foreground leading-tight" dangerouslySetInnerHTML={{ __html: t('landing.cta.mentorsReady') }} />
                 </div>
               </div>
             </div>

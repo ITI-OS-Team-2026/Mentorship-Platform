@@ -1,12 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
+import { useLanguageStore } from '../store/languageStore';
 import { toast } from 'sonner';
 import Avatar from '../components/ui/Avatar';
 
 // Avatar fallback handled by Avatar component
 
-const generateAvailableDates = (availList) => {
+const generateAvailableDates = (availList, locale = 'en-US') => {
   if (!availList || availList.length === 0) return [];
   const daysMap = { 'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6 };
   const availableDays = availList.map(a => daysMap[a.day_of_week]);
@@ -25,7 +27,7 @@ const generateAvailableDates = (availList) => {
       const dayStr = String(date.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${dayStr}`;
 
-      const displayLabel = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      const displayLabel = date.toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric' });
       dates.push({ value: formattedDate, label: displayLabel });
     }
   }
@@ -73,6 +75,8 @@ const getSlotsForDate = (dateStr, availList) => {
 };
 
 const MentorProfile = () => {
+  const { t } = useTranslation();
+  const { lang } = useLanguageStore();
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -94,8 +98,10 @@ const MentorProfile = () => {
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
 
+  const locale = lang === 'ar' ? 'ar-EG' : 'en-US';
+
   // Derive available dates and slots from availability — avoids setState-in-effect antipattern
-  const availableDates = useMemo(() => generateAvailableDates(availability), [availability]);
+  const availableDates = useMemo(() => generateAvailableDates(availability, locale), [availability, locale]);
   const effectiveDate = bookingDate || availableDates[0]?.value || '';
   const availableSlots = useMemo(
     () => getSlotsForDate(effectiveDate, availability),
@@ -112,11 +118,11 @@ const MentorProfile = () => {
           setAvailability(data.availability);
           setReviews(data.reviews || []);
         } else {
-          toast.error('Mentor not found');
+          toast.error(t('mentorProfile.toasts.mentorNotFound'));
           navigate('/mentors');
         }
       } catch {
-        toast.error('Failed to load mentor details');
+        toast.error(t('mentorProfile.toasts.failedLoad'));
       } finally {
         setLoading(false);
       }
@@ -183,7 +189,7 @@ const MentorProfile = () => {
 
       setBookingDate(`${year}-${month}-${day}`);
       setBookingTime(''); // User needs to pick exact 45-min chunk
-      toast.success(`Selected upcoming ${slot.day_of_week}`);
+      toast.success(t('mentorProfile.toasts.selectedDay', { day: slot.day_of_week }));
     }
   };
 

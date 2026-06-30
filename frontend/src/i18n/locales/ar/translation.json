@@ -1,0 +1,440 @@
+{
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "loadingWorkspace": "جارٍ تحميل المساحة...",
+    "loadingProfile": "جارٍ تحميل الملف الشخصي...",
+    "optimizedIndex": "جارٍ تحميل الفهرس المحسّن...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "close": "✕",
+    "notFound": "غير موجود",
+    "noResults": "لا توجد نتائج.",
+    "networkError": "خطأ في الشبكة",
+    "updateFailed": "فشل التحديث",
+    "error": "خطأ"
+  },
+  "nav": {
+    "findMentors": "البحث عن مرشد",
+    "becomeMentor": "كن مرشدًا",
+    "pricing": "الأسعار",
+    "login": "تسجيل الدخول",
+    "getStarted": "ابدأ الآن",
+    "dashboard": "لوحة التحكم",
+    "adminConsole": "لوحة الإدارة",
+    "logout": "تسجيل الخروج",
+    "mySessions": "جلساتي",
+    "myWorkspace": "مساحتي",
+    "switchToLight": "التبديل إلى الوضع الفاتح",
+    "switchToDark": "التبديل إلى الوضع الداكن",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "goToDashboard": "الذهاب إلى لوحة التحكم"
+  },
+  "footer": {
+    "mentors": "المرشدون",
+    "dashboard": "لوحة التحكم",
+    "login": "تسجيل الدخول",
+    "copyright": "© {{year}} MentHub. جميع الحقوق محفوظة."
+  },
+  "landing": {
+    "hero": {
+      "line1": "سارع بتطوير مسيرتك المهنية",
+      "line2": "مع",
+      "highlight": "إرشاد احترافي."
+    },
+    "testimonial": {
+      "stars": "تقييم 5 نجوم",
+      "quote": "\"ساعدني مرشدي في الحصول على منصب مهندس أول خلال 3 أشهر. الخطة المنظمة والمتابعة الأسبوعية صنعت الفرق كله.\"",
+      "author": "سارة ك. — مهندسة واجهات أمامية"
+    },
+    "heroDescription": "تواصل مع محترفين في الصناعة مروا بنفس التحديات التي تواجهها. ساعد مرشدونا <1>+10,000 متعلّم</1> في بلوغ مراحلهم التالية.",
+    "heroCta": "ابحث عن مرشد",
+    "heroCtaOutline": "ابدأ مجانًا",
+    "metrics": {
+      "label": "إحصائيات المنصة",
+      "copy1": "يشهد الإرشاد المهني أكبر تحول له منذ جيل. المتعلمون الذين يعملون مع المرشد المناسب يحصلون على الوظائف بشكل أسرع — وبثقة أكبر بكثير.",
+      "copy2": "بُنيت MentHub على هذا الإيمان. تربطك منصتنا بخبراء موثّقين لتركّز على ما يدفع مسيرتك المهنية قُدمًا فعلًا.",
+      "metric1Value": "+500",
+      "metric1Desc": "مرشدون خبراء موثوقون في كل مجال تقني رئيسي",
+      "metric2Value": "+10 آلاف",
+      "metric2Desc": "جلسات مكتملة — بنسبة تحقيق أهداف 95٪",
+      "metric3Value": "★4.9",
+      "metric3Desc": "متوسط تقييم المرشدين من آلاف مراجعات المتعلمين"
+    },
+    "bento": {
+      "overline": "خبرة المجالات",
+      "title": "أتقن مجالك التقني",
+      "frontend": {
+        "title": "هندسة الواجهات الأمامية",
+        "desc": "React وVue وTypeScript ومعمارية CSS وأداء الويب وإتاحة الوصول."
+      },
+      "backend": {
+        "title": "هندسة الواجهات الخلفية",
+        "desc": "Node.js وPython وواجهات REST وGraphQL وقواعد البيانات وتصميم الأنظمة."
+      },
+      "ai": {
+        "title": "الذكاء الاصطناعي وتعلّم الآلة",
+        "desc": "PyTorch والنماذج اللغوية الكبيرة وخطوط معالجة MLOps والبحث التطبيقي."
+      },
+      "cloud": {
+        "title": "السحابة والبنية التحتية",
+        "desc": "AWS وGCP وKubernetes وDevOps وCI/CD والبنية التحتية ككود."
+      },
+      "mobile": {
+        "title": "تطوير تطبيقات الجوال",
+        "desc": "React Native وSwift وKotlin وFlutter لتطبيقات متعددة المنصات."
+      },
+      "explore": "استكشف مرشدي {{domain}}"
+    },
+    "process": {
+      "overline": "عملية بسيطة",
+      "title": "كيف تعمل",
+      "step1Title": "تصفّح المرشدين",
+      "step1Desc": "استكشف قائمتنا المنسّقة من المحترفين الموثوقين في كل مجال تقني رئيسي.",
+      "step2Title": "احجز جلسة",
+      "step2Desc": "جدول جلسة فردية في وقت يناسبك — الجلسات مرنة وتركّز على الأهداف.",
+      "step3Title": "ننمو معًا",
+      "step3Desc": "احصل على إرشاد مخصّص ومراجعات للأكواد ونصائح مهنية وخارطة طريق واضحة لمرحلتك التالية."
+    },
+    "cta": {
+      "heading1": "طوّر مسيرتك المهنية مع",
+      "heading2": "المرشد المناسب",
+      "subtitle": "مستعد للوصول إلى مستواك التالي؟ احجز جلسة مع خبير صناعي موثوق اليوم.",
+      "talkTitle": "نحب أن نتحدث معك حول",
+      "checklist1": "إرشاد فردي مخصّص",
+      "checklist2": "توجيه احترافي في أكثر من 50 مجالًا",
+      "checklist3": "محبوب من +10,000 متعلّم",
+      "checklist4": "كيف نساعدك في بلوغ أهدافك",
+      "ctaButton": "ابدأ مجانًا",
+      "mentorsReady": "+500 مرشد<br />جاهزون للمساعدة"
+    }
+  },
+  "auth": {
+    "login": {
+      "badge": "مرحبًا بعودتك",
+      "heading": "تسجيل الدخول",
+      "description": "ادخل إلى مساحة MentHub الخاصة بك وأكمل رحلة الإرشاد."
+    },
+    "register": {
+      "badge": "انضم إلى MentHub",
+      "heading": "أنشئ حسابك",
+      "description": "ابدأ رحلة الإرشاد بإنشاء حساب MentHub مجاني."
+    },
+    "loginButton": "دخول",
+    "registerButton": "تسجيل",
+    "working": "جارٍ العمل",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "you@domain.com",
+    "passwordLabel": "كلمة المرور",
+    "passwordPlaceholder": "••••••••",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "roleLabel": "الدور",
+    "chooseRole": "اختر دورًا",
+    "student": "طالب",
+    "mentor": "مرشد",
+    "loginSubmit": "ادخل إلى مساحة الإرشاد الخاصة بك.",
+    "registerSubmit": "أنشئ هوية إرشاد جديدة.",
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "أدخل عنوان بريد إلكتروني صالح.",
+      "passwordRequired": "كلمة المرور مطلوبة.",
+      "passwordShort": "استخدم 8 أحرف على الأقل.",
+      "roleRequired": "اختر دورًا للمتابعة.",
+      "authFailed": "فشل المصادقة."
+    }
+  },
+  "mentorSearch": {
+    "title": "محرّك الاكتشاف",
+    "subtitle": "تصفّح المرشدين التقنيين واحجز جلستك.",
+    "searchPlaceholder": "ابحث بالاسم أو المسمى الوظيفي...",
+    "sortTopRated": "الأعلى تقييمًا",
+    "sortPriceLow": "السعر: من الأقل إلى الأعلى",
+    "sortPriceHigh": "السعر: من الأعلى إلى الأقل",
+    "noMentors": "لا يوجد مرشدون مطابقون لمعاييرك.",
+    "noBio": "لا توجد سيرة ذاتية.",
+    "perHour": "/ساعة",
+    "viewProfile": "عرض الملف الشخصي",
+    "failedFetch": "فشل في جلب المرشدين"
+  },
+  "mentorProfile": {
+    "about": "نبذة",
+    "noBio": "لم تُقدّم سيرة ذاتية احترافية بعد.",
+    "reviews": "التقييمات",
+    "review": "تقييم",
+    "reviews_plural": "تقييمات",
+    "writeReview": "اكتب تقييمًا",
+    "ratingLabel": "التقييم",
+    "reviewLabel": "المراجعة",
+    "reviewPlaceholder": "شارك ما لفت انتباهك في جلستك",
+    "submitting": "جارٍ الإرسال...",
+    "submitReview": "إرسال التقييم",
+    "noReviewsYet": "لا توجد تقييمات بعد.",
+    "availabilityOverview": "نظرة عامة على أوقات التوفر",
+    "reserveSlot": "احجز موعدًا",
+    "bookSubtitle": "احجز جلسة فردية مدتها 45 دقيقة",
+    "noAvailability": "لم ينشر هذا المرشد أي مواعيد متاحة.",
+    "bookingUnavailable": "الحجز غير متاح",
+    "selectDate": "اختر التاريخ",
+    "chooseDate": "اختر تاريخًا",
+    "availableSlots": "المواعيد المتاحة",
+    "noSlotsForDate": "لا توجد مواعيد متبقية لهذا التاريخ",
+    "sessionNote": "الجلسات عبارة عن تقييمات أكواد معزولة مدتها 45 دقيقة بدقة.",
+    "submissionContext": "سياق الطلب",
+    "submissionPlaceholder": "ما الذي تريد مراجعته؟ (مثل: حالة سباق غير متزامن في Node)",
+    "secureSession": "احجز جلسة 45 دقيقة",
+    "toasts": {
+      "mentorNotFound": "المرشد غير موجود",
+      "failedLoad": "فشل تحميل تفاصيل المرشد",
+      "mustLogin": "يجب تسجيل الدخول لحجز جلسة",
+      "onlyStudents": "فقط الطلاب يمكنهم حجز الجلسات.",
+      "selectDateTime": "يرجى اختيار التاريخ والوقت",
+      "bookedSuccess": "تم حجز الجلسة بنجاح!",
+      "bookFailed": "فشل في حجز الجلسة",
+      "bookingNetworkError": "خطأ في الشبكة أثناء الحجز",
+      "reviewNotAvailable": "التقييم غير متاح لهذا المرشد بعد.",
+      "chooseRating": "اختر تقييمًا من 1 إلى 5.",
+      "addReview": "يرجى إضافة مراجعة قصيرة.",
+      "reviewSubmitted": "تم إرسال التقييم.",
+      "reviewFailed": "فشل في إرسال التقييم",
+      "reviewNetworkError": "خطأ في الشبكة أثناء إرسال التقييم",
+      "selectedDay": "تم اختيار {{day}} القادم"
+    }
+  },
+  "mentorDashboard": {
+    "title": "مساحة المرشد",
+    "subtitle": "أدر ملفك الشخصي وأوقات توفرك وجلساتك",
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "availability": "التوفر",
+      "sessions": "الجلسات",
+      "history": "السجل"
+    },
+    "profile": {
+      "welcomeTitle": "مرحبًا بك في MentHub!",
+      "welcomeDesc": "يرجى تهيئة ملفك الشخصي لبدء استقبال الجلسات.",
+      "settings": "إعدادات الملف الشخصي",
+      "fullName": "الاسم الكامل",
+      "title": "المسمى الوظيفي",
+      "techStack": "المكدس التقني",
+      "selectStack": "اختر مكدسك الأساسي...",
+      "hourlyRate": "السعر بالساعة ($)",
+      "bio": "السيرة الذاتية",
+      "bioPlaceholder": "أخبر الطلاب عن خبرتك وتجربتك...",
+      "updateProfile": "تحديث الملف الشخصي",
+      "initializeProfile": "تهيئة الملف الشخصي",
+      "previewTitle": "معاينة الملف الشخصي",
+      "yourName": "اسمك",
+      "yourTitle": "مسماك الوظيفي",
+      "hourlyRatePreview": "السعر بالساعة",
+      "techStackPreview": "المكدس التقني",
+      "notSelected": "غير محدد"
+    },
+    "availability": {
+      "editSlot": "تعديل الموعد",
+      "addSlot": "إضافة موعد جديد",
+      "dayOfWeek": "يوم الأسبوع",
+      "startTime": "وقت البدء",
+      "endTime": "وقت الانتهاء",
+      "updateSlot": "تحديث الموعد",
+      "addTimeSlot": "إضافة موعد",
+      "current": "أوقات التوفر الحالية",
+      "noSlots": "لم تتم تهيئة أي مواعيد بعد.",
+      "addFirstSlot": "أضف أول موعد توفر أعلاه.",
+      "slotHint": {
+        "lessThan45": "⚠ المدة أقل من 45 دقيقة — لا مواعيد قابلة للحجز. جرّب إنهاء الموعد في <strong>{{time}}</strong> لموعد واحد.",
+        "perfect": "✓ ممتاز — يتسع تمامًا لـ <strong>{{count}} موعد × 45 دقيقة{{plural}}</strong>.",
+        "partial": "⚠ يتسع لـ <strong>{{count}} موعد{{plural}}</strong> + {{remainder}} دقيقة متبقية. اضبط إلى"
+      }
+    },
+    "sessions": {
+      "noSessions": "لا توجد جلسات واردة.",
+      "noSessionsHint": "سيظهر الطلاب هنا عند حجزهم جلسات معك.",
+      "sessionWith": "جلسة مع {{name}}",
+      "studentContext": "سياق الطالب",
+      "meetingLink": "رابط الاجتماع",
+      "linkPlaceholder": "https://meet.google.com/... أو https://zoom.us/...",
+      "saveLink": "حفظ الرابط",
+      "yourNotes": "ملاحظات التقييم الخاصة بك",
+      "notesPlaceholder": "قدّم ملاحظات...",
+      "saveNotes": "حفظ الملاحظات",
+      "copy": "نسخ",
+      "copyLink": "نسخ الرابط",
+      "linkCopied": "تم نسخ الرابط!",
+      "complete": "إكمال",
+      "cancel": "إلغاء"
+    },
+    "history": {
+      "empty": "لا توجد جلسات مكتملة أو ملغاة.",
+      "emptyHint": "سيظهر سجل جلساتك هنا."
+    },
+    "toasts": {
+      "failedLoad": "فشل تحميل مساحة المرشد",
+      "profileUpdated": "تم تحديث الملف الشخصي",
+      "profileCreated": "تم إنشاء الملف الشخصي بنجاح!",
+      "selectStack": "يرجى اختيار مكدس تقني",
+      "slotAdded": "تمت إضافة الموعد",
+      "slotUpdated": "تم تحديث الموعد",
+      "slotDeleted": "تم حذف الموعد",
+      "slotDeleteFailed": "فشل حذف الموعد",
+      "slotAddFailed": "فشل إضافة الموعد",
+      "slotUpdateFailed": "فشل تحديث الموعد",
+      "sessionStatus": "تم {{status}} الجلسة",
+      "notesSaved": "تم حفظ الملاحظات",
+      "linkSaved": "تم حفظ رابط الاجتماع — يمكن للطالب الانضمام الآن!",
+      "linkFailed": "فشل حفظ الرابط",
+      "enterLink": "يرجى إدخال رابط الاجتماع"
+    }
+  },
+  "studentDashboard": {
+    "title": "مساحتي المخصصة",
+    "unknownMentor": "مرشد غير معروف",
+    "context": "السياق",
+    "evaluationNotes": "ملاحظات التقييم",
+    "cancelSession": "إلغاء الجلسة",
+    "reschedule": "إعادة جدولة",
+    "writeReview": "اكتب تقييمًا",
+    "rescheduleModal": {
+      "title": "إعادة جدولة الجلسة",
+      "selectDate": "اختر التاريخ",
+      "chooseDate": "اختر تاريخًا",
+      "availableTimes": "الأوقات المتاحة",
+      "confirmReschedule": "تأكيد إعادة الجدولة"
+    },
+    "toasts": {
+      "failedLoad": "فشل تحميل الجلسات",
+      "canceledSuccess": "تم إلغاء الجلسة بنجاح",
+      "cancelFailed": "فشل إلغاء الجلسة",
+      "cancelError": "خطأ أثناء إلغاء الجلسة",
+      "rescheduledSuccess": "تمت إعادة جدولة الجلسة",
+      "rescheduleFailed": "فشل إعادة الجدولة",
+      "rescheduleNetworkError": "خطأ في الشبكة أثناء إعادة الجدولة",
+      "selectDateTime": "اختر التاريخ والوقت",
+      "failedLoadAvailability": "فشل تحميل أوقات توفر المرشد"
+    }
+  },
+  "adminDashboard": {
+    "title": "لوحة الإدارة",
+    "subtitle": "أدر المستخدمين والمكدسات وصحة المنصة",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "users": "المستخدمون",
+      "stacks": "المكدسات",
+      "statistics": "الإحصائيات"
+    },
+    "overview": {
+      "totalUsers": "إجمالي المستخدمين",
+      "totalMentors": "إجمالي المرشدين",
+      "totalStudents": "إجمالي الطلاب",
+      "totalSessions": "إجمالي الجلسات",
+      "techStacks": "المكدسات التقنية"
+    },
+    "statistics": {
+      "scheduledSessions": "الجلسات المجدولة",
+      "completedSessions": "الجلسات المكتملة",
+      "canceledSessions": "الجلسات الملغاة"
+    },
+    "users": {
+      "title": "المستخدمون",
+      "searchPlaceholder": "ابحث عن المستخدمين...",
+      "noUsers": "لا يوجد مستخدمون.",
+      "tableHeaders": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "role": "الدور",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "approve": "موافقة",
+      "unblock": "رفع الحظر",
+      "block": "حظر",
+      "confirmAction": "تأكيد الإجراء",
+      "approveConfirm": "الموافقة على {{email}}؟",
+      "unblockConfirm": "رفع الحظر عن {{email}}؟",
+      "blockConfirm": "حظر {{email}}؟"
+    },
+    "stacks": {
+      "title": "المكدسات التقنية",
+      "editStack": "تعديل المكدس",
+      "addStack": "إضافة مكدس جديد",
+      "namePlaceholder": "اسم المكدس",
+      "descriptionPlaceholder": "الوصف (اختياري)",
+      "update": "تحديث",
+      "create": "إنشاء",
+      "noStacks": "لا توجد مكدسات بعد. أضف أول واحد أعلاه.",
+      "tableHeaders": {
+        "name": "الاسم",
+        "description": "الوصف",
+        "actions": "إجراءات"
+      },
+      "deleteConfirm": "حذف المكدس \"{{name}}\"؟ لا يمكن التراجع عن هذا."
+    },
+    "toasts": {
+      "userUpdated": "تم تحديث المستخدم",
+      "stackUpdated": "تم تحديث المكدس",
+      "stackCreated": "تم إنشاء المكدس",
+      "stackDeleted": "تم حذف المكدس"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "confirm": {
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    }
+  },
+  "upcomingSession": {
+    "emptyTitle": "ليس لديك أي جلسات قادمة بعد.",
+    "emptyDesc": "احجز أول جلسة إرشاد للحصول على توجيه مخصّص من مرشدين ذوي خبرة.",
+    "findMentor": "ابحث عن مرشد",
+    "upcomingSession": "الجلسة القادمة",
+    "mentor": "مرشد",
+    "mentorship": "إرشاد",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "meeting": "الاجتماع",
+    "duration": "المدة:",
+    "linkProvided": "تم توفير الرابط",
+    "notAvailable": "غير متاح",
+    "context": "السياق",
+    "evaluationNotes": "ملاحظات التقييم",
+    "joinMeeting": "انضمام للاجتماع",
+    "cancelSession": "إلغاء الجلسة",
+    "reschedule": "إعادة جدولة",
+    "bookedVia": "محجوز عبر",
+    "countdown": {
+      "startingNow": "يبدأ الآن",
+      "startsIn": "يبدأ خلال {{value}} {{unit}}"
+    },
+    "units": {
+      "day_one": "يوم",
+      "day_other": "أيام",
+      "hour_one": "ساعة",
+      "hour_other": "ساعات",
+      "minute_one": "دقيقة",
+      "minute_other": "دقائق"
+    }
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "goToPrevious": "الانتقال إلى الصفحة السابقة",
+    "goToNext": "الانتقال إلى الصفحة التالية"
+  },
+  "notFound": {
+    "badge": "المسار غير متاح",
+    "title": "هذه الصفحة خارج الحدود.",
+    "description": "الرابط معطول أو مفقود، أو لا يمكن لدورك الحالي الوصول إلى هذه المنطقة.",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "backHome": "العودة للرئيسية",
+    "goBack": "رجوع"
+  },
+  "languageSwitcher": {
+    "en": "EN",
+    "ar": "AR"
+  }
+}
